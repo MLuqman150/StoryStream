@@ -20,6 +20,8 @@ app.get("/", (req, res) => {
     res.send("Hello World")
 })
 
+app.use("/auth", require("./controllers/userAuth"))
+
 app.listen(port, () => {
     console.log(`App listening on port ${port}`)
 })
