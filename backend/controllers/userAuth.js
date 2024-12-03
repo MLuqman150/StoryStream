@@ -17,11 +17,11 @@ router.post("/login", async (req, res) => {
 // Api for user sign up
 router.post("/signup", async (req, res) => {
     try {
-        const response = await userService.login(req.body)
+        const response = await userService.createUser(req.body)
         res.status(200).send({ message: response.message, user: response.user });
     }
     catch (err) {
-        res.status(500).send("Unable to login! Please try again.");
+        res.status(500).send("Unable to Register you! Please try again.");
         console.log("Error: ", err);
     }
 })
