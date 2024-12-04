@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const userService = require("../services/userService")
+const protect = require("../middlewares/authMiddleware")
 
 // Api for user login
 router.post("/login", async (req, res) => {
     try {
         const response = await userService.login(req.body)
-        res.status(200).send({ message: response.message, user: response.user });
+        res.status(200).send({ message: response.message, user: response.user, token: response.token });
     }
     catch (err) {
         res.status(500).send("Unable to login! Please try again.");
