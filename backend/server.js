@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 require('dotenv').config()
 const app = express();
 const port = 5000 || process.env.PORT
+const createAdmin = require('./createAdmin.js')
 
 // Database connection
 mongoose.connect(process.env.DB_CONNECTION, {
@@ -15,6 +16,14 @@ mongoose.connect(process.env.DB_CONNECTION, {
     .catch((error) => {
         console.error('Error connecting to MongoDB:', error);
     });
+
+// Code to create the admin user if not created
+const admin = async () => {
+    const response = await createAdmin()
+    console.log(response)
+}
+
+admin()
 
 app.get("/", (req, res) => {
     res.send("Hello World")
