@@ -17,7 +17,25 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         required: true
-    }
+    },
+    createdBlogs: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "blogs"
+    }],
+    likedBlogs: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "blogs"
+    }],
+    followers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users"
+    }],
+    following: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users"
+    }]
+}, {
+    timestamps: true
 })
 
 const users = mongoose.model('users', userSchema)
