@@ -30,6 +30,7 @@ app.get("/", (req, res) => {
 })
 
 app.use("/auth", require("./controllers/userAuth"))
+app.use("/blog", require("./controllers/contentController"))
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`)
