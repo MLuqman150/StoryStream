@@ -6,8 +6,10 @@ const isAdmin = require("../middlewares/adminCheck")
 
 // Api for user login
 router.post("/login", async (req, res) => {
+    console.log("Body: ", req.body)
+    const body = req.body
     try {
-        const response = await userService.login(req.body)
+        const response = await userService.login(body)
         res.status(200).send({ message: response.message, user: response.user, token: response.token });
     }
     catch (err) {

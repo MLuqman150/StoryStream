@@ -6,6 +6,9 @@ require('dotenv').config()
 // Function for user login 
 async function login(body) {
     const { email, password } = body
+    if (!email || !password) {
+        throw new Error("Please Enter your email and password!")
+    }
     const user = await Users.findOne({ email })
     if (user == null) {
         return { message: "No user with this email found", user: null }
