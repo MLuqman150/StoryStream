@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require('mongoose');
+const cors = require("cors");
 require('dotenv').config()
 const app = express();
 const port = 5000 || process.env.PORT
@@ -22,6 +23,10 @@ const admin = async () => {
     const response = await createAdmin()
     console.log(response)
 }
+
+app.use(cors())
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 admin()
 

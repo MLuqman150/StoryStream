@@ -20,6 +20,7 @@ router.post("/login", async (req, res) => {
 
 // Api for user sign up
 router.post("/signup", async (req, res) => {
+    console.log("Body: ", req.body)
     try {
         const response = await userService.createUser(req.body)
         res.status(200).send({ message: response.message, user: response.user });

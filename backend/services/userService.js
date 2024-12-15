@@ -13,8 +13,8 @@ async function login(body) {
     if (user == null) {
         return { message: "No user with this email found", user: null }
     }
-    const passwordHash = await bcrypt.hash(password, 10);
-    const passwordMatch = await bcrypt.compare(user.password, passwordHash);
+    // const passwordHash = await bcrypt.hash(password, 10);
+    const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
         return { message: "Invalid Password", user: null }
     }
@@ -30,7 +30,7 @@ async function createUser(body) {
 
     const userExists = Users.find({ email })
 
-    if (userExists) {
+    if (!userExists) {
         throw new Error("User with this email already exists.")
     }
 
