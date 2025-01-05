@@ -31,14 +31,32 @@ async function getAllBlogs() {
     return { message: "All the Blogs", blogs }
 }
 
-async function getBlogsByAuthor(body) {
+async function getBlogsByAuthor(body, query) {
     const author = body.author
-    const blogs = await Blog.find({ author: author })
+    const { page, pageSize } = query
+
+    // const blogs = await Blog.find({ author: author })
+
+    const blogs = await Blog.aggregate([
+        {
+            $match: {
+                author: author
+            }
+        },
+        {
+            $facet: {
+                metadata: [{ $count: 'totalCount' }],
+                data: [{ $skip: (page - 1) * pageSize }, { $limit: pageSize }],
+            }
+        }
+    ])
 
     // pagination to be implemented
     if (!blogs) {
         throw new Error("Currently there is no blog by this author")
     }
+
+    return { message: "All the Blogs by this author", blogs }
 }
 
 async function getBlogsByFollowing(body) {

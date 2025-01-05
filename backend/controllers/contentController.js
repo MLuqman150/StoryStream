@@ -15,4 +15,15 @@ router.post("/createBlog", protect, async (req, res) => {
     }
 })
 
+router.get("/getAllBlogs", protect, async (req, res) => {
+    try {
+        const response = await blogService.getAllBlogs();
+        res.status(200).send(response)
+    }
+    catch (err) {
+        res.status(500).send("Unable to fetch blogs! Please try again.");
+        console.log("Error: ", err);
+    }
+})
+
 module.exports = router
