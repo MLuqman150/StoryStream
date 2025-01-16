@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom'
 
-const Login = () => {
+function SignUp() {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const onSubmit = (data) => {
@@ -9,10 +9,11 @@ const Login = () => {
         console.log(data);
     }
 
+
     return (
         <div className="flex h-screen items-center justify-center bg-[#]">
             <div className="w-[40%] h-[60%]  rounded-xl flex flex-col items-center justify-center p-4 bg-[#D9EAFD]">
-                <h1 className="font-bold text-2xl">Login </h1>
+                <h1 className="font-bold text-2xl">Sign Up </h1>
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full flex align-center justify-center flex-col">
                     <div className="flex justify-center">
                         <label htmlFor="email" className="font-bold mr-4 mt-5">Email: </label>
@@ -31,11 +32,11 @@ const Login = () => {
 
                 </form>
 
-                <p className="mt-4">Don&apos;t have an account. <Link to="/signup" className="underline hover:text-red-600">Sign Up</Link> </p>
+                <p className="mt-4">Already have an account. <Link to="/login" className="underline hover:text-red-600">Login</Link> </p>
             </div>
 
         </div>
     )
 }
 
-export default Login
+export default SignUp
