@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require("cors");
 require('dotenv').config()
 const app = express();
-const port = 5000 || process.env.PORT
+const port = 3000 || process.env.PORT
 const createAdmin = require('./createAdmin.js')
 
 // Database connection

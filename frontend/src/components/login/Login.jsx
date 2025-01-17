@@ -1,17 +1,48 @@
 import { useForm } from "react-hook-form";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm();
 
-    const onSubmit = (data) => {
+    const navigate = useNavigate();
 
+    const notify = (message) => {
+        toast(message);
+    }
+
+    const onSubmit = async (data) => {
+        try {
+            const response = await fetch("http://localhost:5000/auth/login",
+                {
+                    method: "POST",
+                    body: data
+                }
+            )
+
+            if (response.status == 200) {
+                await notify(response.message)
+                navigate('/home')
+            }
+
+            console.log(response);
+
+        }
+
+        catch (error) {
+            notify(error.message)
+            setError("root", {
+                message: error.message
+            })
+        }
         console.log(data);
     }
 
     return (
         <div className="flex h-screen items-center justify-center bg-[#]">
-            <div className="w-[40%] h-[60%]  rounded-xl flex flex-col items-center justify-center p-4 bg-[#D9EAFD]">
+            <div className="w-[40%] h-auto  rounded-xl flex flex-col items-center justify-center p-4 bg-[#D9EAFD]">
                 <h1 className="font-bold text-2xl">Login </h1>
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full flex align-center justify-center flex-col">
                     <div className="flex justify-center">
@@ -26,9 +57,23 @@ const Login = () => {
                     </div>
                     {errors.password && <div className="text-red-500 text-center">{errors.password.message}</div>}
                     <div className="flex justify-center">
-                        <input type="submit" className="bg-blue-500 text-white p-2 rounded-xl mt-4 w-[40%] hover:bg-blue-600 hover:cursor-pointer" />
+                        <button type="submit" disabled={isSubmitting} className="bg-blue-500 text-white p-2 rounded-xl mt-4 w-[40%] hover:bg-blue-600 hover:cursor-pointer">
+                            {isSubmitting ? 'loading...' : 'Submit'}
+                        </button>
                     </div>
 
+                    <ToastContainer
+                        position="top-right"
+                        autoClose={3000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick={false}
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="light"
+                    />
                 </form>
 
                 <p className="mt-4">Don&apos;t have an account. <Link to="/signup" className="underline hover:text-red-600">Sign Up</Link> </p>
