@@ -18,19 +18,24 @@ function SignUp() {
 
     const onSubmit = async (data) => {
         try {
-            const response = await fetch("http://localhost:5000/auth/signup",
+            const response = await fetch("http://localhost:3000/auth/signup",
                 {
                     method: "POST",
-                    body: data
+                    body: JSON.stringify(data),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
                 }
             )
 
             if (response.status == 200) {
-                await notify(response.message)
-                navigate('/home')
+                notify(response.message)
+                setTimeout(() => {
+                    navigate('/home')
+                }, 2000)
             }
 
-            console.log(response);
+            console.log(response.json());
 
         }
 

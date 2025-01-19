@@ -15,19 +15,24 @@ const Login = () => {
 
     const onSubmit = async (data) => {
         try {
-            const response = await fetch("http://localhost:5000/auth/login",
+            const response = await fetch("http://localhost:3000/auth/login",
                 {
                     method: "POST",
-                    body: data
+                    body: JSON.stringify(data),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
                 }
             )
 
-            if (response.status == 200) {
-                await notify(response.message)
-                navigate('/home')
+            if (response.status == 200 && response.message == "Login successful") {
+                notify("Hello")
+                setTimeout(() => {
+                    navigate('/home')
+                }, 2000)
             }
 
-            console.log(response);
+            await console.log(response.json());
 
         }
 
