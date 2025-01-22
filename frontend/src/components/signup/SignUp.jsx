@@ -50,7 +50,7 @@ function SignUp() {
 
     return (
         <div className="flex h-screen items-center justify-center bg-[#]">
-            <div className="w-[40%] h-auto  rounded-xl flex flex-col items-center justify-center p-4 bg-[#D9EAFD]">
+            <div className="md:w-[40%] w-full h-auto  rounded-xl flex flex-col items-center justify-center p-4 bg-[#D9EAFD]">
 
                 <h1 className="font-bold text-2xl">Sign Up </h1>
 

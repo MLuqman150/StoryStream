@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
-    const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm();
+    const { register, handleSubmit, reset, formState: { errors, isSubmitting }, setError } = useForm();
 
     const navigate = useNavigate();
 
@@ -25,18 +25,27 @@ const Login = () => {
                 }
             )
 
-            if (response.status == 200 && response.message == "Login successful") {
-                notify("Hello")
+            const responseData = await response.json()
+
+            console.log(responseData);
+
+            if (response.status == 200 && responseData.message == "Login successful") {
+                notify(responseData.message)
                 setTimeout(() => {
                     navigate('/home')
                 }, 2000)
             }
 
-            await console.log(response.json());
+            if (response.status == 200 && responseData.message != "Login successful") {
+                notify(responseData.message)
+                reset()
+            }
 
         }
 
         catch (error) {
+            console.log("Error: ", error);
+            reset()
             notify(error.message)
             setError("root", {
                 message: error.message
@@ -47,7 +56,7 @@ const Login = () => {
 
     return (
         <div className="flex h-screen items-center justify-center bg-[#]">
-            <div className="w-[40%] h-auto  rounded-xl flex flex-col items-center justify-center p-4 bg-[#D9EAFD]">
+            <div className="md:w-[40%] w-full h-auto  rounded-xl flex flex-col items-center justify-center p-4 bg-[#D9EAFD]">
                 <h1 className="font-bold text-2xl">Login </h1>
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full flex align-center justify-center flex-col">
                     <div className="flex justify-center">

@@ -9,20 +9,33 @@ async function login(body) {
     if (!email || !password) {
         throw new Error("Please Enter your email and password!")
     }
-    const user = await Users.findOne({ email })
+    const user = await Users.findOne({ email: email })
     if (user == null) {
-        return { message: "No user with this email found", user: null }
-        // throw new Error("No user with this email found")
+        return { message: "No user with this email found" }
+        // throw ("No user with this email found")
     }
     // const passwordHash = await bcrypt.hash(password, 10);
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
-        return { message: "Invalid Password", user: null }
+        return { message: "Invalid Password" }
+        // throw ("Invalid Password")
         // throw new Error("Invalid Password")
     }
 
+
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
-    return { message: "Login successful", user, token }
+    const userEmail= user.email
+
+    const userId = user._id
+
+    console.log("User Info: ", userEmail, userId)
+    return { 
+        message: "Login successful", 
+        userEmail,
+        userId,
+        token,        
+    }
 }
 
 // function for user registration

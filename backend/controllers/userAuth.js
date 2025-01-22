@@ -11,10 +11,10 @@ router.post("/login", async (req, res) => {
     try {
         const response = await userService.login(body)
         console.log("Response: ", response)
-        res.status(200).json({ message: response.message, user: response.user, token: response.token });
+        res.status(200).json({ message: response.message, token: response.token, email: response.userEmail, id: response.userId });
     }
     catch (err) {
-        res.status(500).json("Unable to login! Please try again.");
+        res.status(500).json({ message: err.message });
         console.log("Error: ", err);
     }
 })
