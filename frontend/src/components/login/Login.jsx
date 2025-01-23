@@ -36,7 +36,7 @@ const Login = () => {
                 }, 2000)
             }
 
-            if (response.status == 200 && responseData.message != "Login successful") {
+            else if (response.status == 200 && responseData.message != "Login successful") {
                 notify(responseData.message)
                 reset()
             }

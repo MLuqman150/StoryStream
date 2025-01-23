@@ -45,8 +45,8 @@ async function createUser(body) {
 
     const userExists = Users.find({ email })
 
-    if (!userExists) {
-        throw new Error("User with this email already exists.")
+    if (userExists) {
+        return{message:"User with this email already exists."}
     }
 
     const user = new Users({
@@ -58,7 +58,7 @@ async function createUser(body) {
 
     await user.save()
 
-    return { message: "User registered successfully", user: user }
+    return { message: "User registered successfully", name, email }
 }
 
 async function getAllUsers() {

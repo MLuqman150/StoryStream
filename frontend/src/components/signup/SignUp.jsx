@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 // toast.configure();
 
 function SignUp() {
-    const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm();
+    const { register, handleSubmit,reset, formState: { errors, isSubmitting }, setError } = useForm();
 
     const navigate = useNavigate();
 
@@ -28,14 +28,22 @@ function SignUp() {
                 }
             )
 
-            if (response.status == 200) {
-                notify(response.message)
+            const responseData = await response.json()
+
+            if (response.status == 200 && responseData.message == "User registered successfully") {
+                notify(responseData.message)
                 setTimeout(() => {
-                    navigate('/home')
+                    navigate('/')
                 }, 2000)
+                reset()
             }
 
-            console.log(response.json());
+            else if(response.status == 200 && responseData.message != "User registered successfully"){
+                notify(responseData.message)
+                reset()
+            }
+
+            console.log(responseData);
 
         }
 
