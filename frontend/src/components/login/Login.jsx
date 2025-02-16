@@ -15,6 +15,7 @@ const Login = () => {
 
     const onSubmit = async (data) => {
         try {
+            console.log(isSubmitting)
             const response = await fetch("http://localhost:3000/auth/login",
                 {
                     method: "POST",
