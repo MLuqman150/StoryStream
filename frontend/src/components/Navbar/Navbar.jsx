@@ -1,13 +1,18 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { IoMenu } from "react-icons/io5";
 import { useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
+
 
 const Navbar = () => {
     const navigate = useNavigate();
 
+    const {logout} = useAuth()
+
     const [open, setOpen] = useState(false);
 
-    const logout = () => {
+    const handleLogout = () => {
+        logout()
         navigate("/");
     }
 
@@ -35,7 +40,7 @@ const Navbar = () => {
                 <Link to="/home"><option className="cursor-pointer hover:font-bold list-none">Home</option></Link>
                 <Link to="/home"><li className="cursor-pointer hover:font-bold list-none">Following</li></Link>
                 <Link to="/home"><li className="cursor-pointer hover:font-bold list-none">Settings</li></Link>
-                <li className="cursor-pointer hover:font-bold list-none" onClick={logout}>Logout</li>
+                <li className="cursor-pointer hover:font-bold list-none" onClick={handleLogout}>Logout</li>
             </div> : <></> }
             
             {/* </div> */}

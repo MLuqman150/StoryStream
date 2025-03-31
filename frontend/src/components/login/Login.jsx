@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from '../../context/AuthContext';
 
 const Login = () => {
+
+    const { login } = useAuth()
     const { register, handleSubmit, reset, formState: { errors, isSubmitting }, setError } = useForm();
 
     const navigate = useNavigate();
@@ -32,6 +35,7 @@ const Login = () => {
 
             if (response.status == 200 && responseData.message == "Login successful") {
                 notify(responseData.message)
+                login(responseData.token)
                 setTimeout(() => {
                     navigate('/home')
                 }, 2000)
