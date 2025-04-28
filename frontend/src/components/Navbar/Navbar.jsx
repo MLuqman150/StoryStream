@@ -30,8 +30,8 @@ const Navbar = () => {
             
             <ul className="md:flex hidden justify-between w-[30%]">
                 <Link to="/home"><li className="cursor-pointer hover:font-bold">Home</li></Link>
-                <Link to="/home"><li className="cursor-pointer hover:font-bold">Following</li></Link>
-                <Link to="/home"><li className="cursor-pointer hover:font-bold">Settings</li></Link>
+                <Link to="/following"><li className="cursor-pointer hover:font-bold">Following</li></Link>
+                <Link to="/settings"><li className="cursor-pointer hover:font-bold">Settings</li></Link>
             </ul>
             <button className="md:block hidden bg-blue-500 text-white p-2 rounded-md font-bold hover:bg-blue-600 hover:cursor-pointer" onClick={logout}>Logout</button>
             {/* <div> */}

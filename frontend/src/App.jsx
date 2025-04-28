@@ -1,6 +1,9 @@
 import Login from './components/login/Login'
 import SignUp from './components/signup/SignUp'
 import Home from './components/home/Home'
+import Following from './components/following/following.jsx'
+import Setting from './components/settings/Setting.jsx'
+import ArticleDetails from './components/articleDetail/ArticleDetails.jsx'
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
 import ProtectedRoutes from './components/routes/ProtectedRoutes'
 import PublicRoutes from './components/routes/PublicRoutes.jsx'
@@ -16,6 +19,9 @@ function App() {
           <Routes>
             <Route element={<ProtectedRoutes/>}>
               <Route path="home" element={<Home />} />
+              <Route path="following" element={<Following />} />
+              <Route path="settings" element={<Setting />} />
+              <Route path="articleDetails" element={<ArticleDetails />} />
             </Route>
             <Route element={<PublicRoutes/>}>
               <Route path="/" element={<Login />} />
