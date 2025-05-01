@@ -3,7 +3,7 @@ import Navbar from '../Navbar/Navbar'
 import bundeno  from '../../assets/bundeno.png'
 import { BiLike, BiDislike } from "react-icons/bi";
 import { FaRegCommentAlt } from "react-icons/fa";
-import { CiShare2 } from "react-icons/ci";
+// import { CiShare2 } from "react-icons/ci";
 import { Link } from 'react-router-dom';
 
 function Home() {
@@ -30,6 +30,7 @@ function Home() {
                 </div>
             </Link>
             </div>
+
             <div className='right-2 bottom-2 text-4xl font-bold text-white bg-blue-700 cursor-pointer p-2 rounded-full w-16 h-16 text-center fixed'>+</div>
         </div>
     )

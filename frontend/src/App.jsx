@@ -3,6 +3,7 @@ import SignUp from './components/signup/SignUp'
 import Home from './components/home/Home'
 import Following from './components/following/following.jsx'
 import Setting from './components/settings/Setting.jsx'
+import CreateBlog from './components/createBlog/CreateBlog.jsx'
 import ArticleDetails from './components/articleDetail/ArticleDetails.jsx'
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
 import ProtectedRoutes from './components/routes/ProtectedRoutes'
@@ -22,6 +23,7 @@ function App() {
               <Route path="following" element={<Following />} />
               <Route path="settings" element={<Setting />} />
               <Route path="articleDetails" element={<ArticleDetails />} />
+              <Route path="createBlog" element={<CreateBlog />} />
             </Route>
             <Route element={<PublicRoutes/>}>
               <Route path="/" element={<Login />} />
