@@ -2,7 +2,7 @@ const Blog = require('../models/blog.model')
 const Users = require('../models/user.model')
 
 async function createBlog(body) {
-    const { title, content, author, tags } = body
+    const { title,image, content, author, tags } = body
 
     const existingBlog = await Blog.findOne({ title: title })
     if (existingBlog) {
@@ -11,6 +11,7 @@ async function createBlog(body) {
 
     const newBlog = new Blog({
         title,
+        image,
         content,
         author,
         tags
