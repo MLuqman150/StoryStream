@@ -8,25 +8,45 @@ export const AuthProvider = ({children}) =>{
         return sessionStorage.getItem("token") || null 
     })
 
+    const [userEmail, setUserEmail] = useState(() => {
+        return sessionStorage.getItem("userEmail") || null
+    })
+
+    const [userId, setUserId] = useState(() => {
+        return sessionStorage.getItem("userId") || null
+    })
+
     useEffect(()=>{
+        const localUserEmail = sessionStorage.getItem("userEmail")
+        const localUserId = sessionStorage.getItem("userid")
         const localToken = sessionStorage.getItem("token")
-        if(localToken){
+        if(localToken && localUserEmail && localUserId){
             setToken(localToken)
+            setUserEmail(localUserEmail)
+            setUserId(localUserId)
         }
     },[])
 
-    const login = (token) => {
+    const login = (token, userEmail, userId) => {
         sessionStorage.setItem("token", token)
+        sessionStorage.setItem("userEmail", userEmail)
+        sessionStorage.setItem("userId", userId)
+        setUserEmail(userEmail)
+        setUserId(userId)
         setToken(token)
     }
 
     const logout = () => {
         sessionStorage.removeItem("token")
+        sessionStorage.removeItem("userEmail")
+        sessionStorage.removeItem("userId")
+        setUserEmail(null)
+        setUserId(null)
         setToken(null)
     }
 
     return (
-        <authContext.Provider value={{login, logout, token}}>
+        <authContext.Provider value={{login, logout, token, userEmail, userId}}>
             {children}
         </authContext.Provider>
     )
