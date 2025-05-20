@@ -31,7 +31,7 @@ const Login = () => {
 
             const responseData = await response.json()
 
-            console.log(responseData);
+            // console.log(responseData);
 
             if (response.status == 200 && responseData.message == "Login successful") {
                 notify(responseData.message)
@@ -67,7 +67,7 @@ const Login = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full flex align-center justify-center flex-col">
                     <div className="flex justify-center">
                         <label htmlFor="email" className="font-bold mr-4 mt-5">Email: </label>
-                        <input id="email" type="email" {...register("email", { required: "Email Address is required" })} placeholder="Email" className="w-[60%] p-2 rounded-xl mt-4" aria-invalid={errors.mail ? "true" : "false"} />
+                        <input id="email" type="email" {...register("email", { required: "Email Address is required" })} placeholder="Email" className="w-[60%] p-2 rounded-xl mt-4" aria-invalid={errors.email ? "true" : "false"} />
                     </div>
                     {errors.email && <div className="text-red-500 text-center">{errors.email.message}</div>}
 
