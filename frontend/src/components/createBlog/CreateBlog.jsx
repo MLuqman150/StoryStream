@@ -2,6 +2,9 @@ import React from "react"
 import Navbar from "../Navbar/Navbar"
 import { useForm } from "react-hook-form";
 import { useAuth } from '../../context/AuthContext';
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const CreateBlog = () =>{
 
@@ -9,12 +12,52 @@ const CreateBlog = () =>{
 
     const { register, handleSubmit, reset, formState: { errors, isSubmitting }, setError } = useForm();
 
-    const postBlog =(data) =>{
+    const notify = (message) => {
+        toast(message);
+    }
+
+    const navigate = useNavigate();
+
+    const postBlog = async (data) =>{
         console.log("IsSubmitting: ",isSubmitting)
         console.log("Data: ",data)
-        console.log("Token: ",token)
-        console.log("UserId: ",userId)
-        reset()
+        try{
+            const response = await fetch("http://localhost:3000/blog/createBlog",{
+                method: "Post",
+                body: JSON.stringify({
+                    title: data.title,
+                    image: data.img,
+                    content: data.content,
+                    author: userId,
+                    // tags: data.tags
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+
+            console.log("Response: ",response)
+
+            const responseData = await response.json()
+
+            if(response.status == 200 && responseData.message == "Blog created successFully"){
+                notify(responseData.message)
+                setTimeout(() => {
+                    navigate('/home')
+                }, 2000)
+                reset()
+            }
+   
+        }
+        catch(error){
+            console.log("Error: ", error);
+            notify(error.message)
+            reset()
+            setError("root", {
+                message: error.message
+            })
+        }
         
     }
 
@@ -43,6 +86,18 @@ const CreateBlog = () =>{
                         {isSubmitting ? 'Posting...' : 'Post'}
                     </button>
                 </div>
+                <ToastContainer
+                        position="top-right"
+                        autoClose={3000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick={false}
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="light"
+                    /> 
             </form>
 
         </>

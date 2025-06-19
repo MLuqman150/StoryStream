@@ -1,8 +1,9 @@
 const Blog = require('../models/blog.model')
 const Users = require('../models/user.model')
 
-async function createBlog(body) {
-    const { title,image, content, author, tags } = body
+async function createBlog(body, file) {
+    const { title, content, author, tags } = body
+    const image = file ? `/uploads/${file.filename}` : null 
 
     const existingBlog = await Blog.findOne({ title: title })
     if (existingBlog) {
