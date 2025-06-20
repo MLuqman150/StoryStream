@@ -20,19 +20,18 @@ const CreateBlog = () =>{
 
     const postBlog = async (data) =>{
         console.log("IsSubmitting: ",isSubmitting)
-        console.log("Data: ",data)
+        console.log("Image Data: ",data.img[0])
+        const formData = new FormData()
+        formData.append("title", data.title)
+        formData.append("image", data.img ? data.img[0] : null)
+        formData.append("content", data.content)
+        formData.append("author", userId)
+
         try{
             const response = await fetch("http://localhost:3000/blog/createBlog",{
                 method: "Post",
-                body: JSON.stringify({
-                    title: data.title,
-                    image: data.img,
-                    content: data.content,
-                    author: userId,
-                    // tags: data.tags
-                }),
+                body:formData,
                 headers: {
-                    "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
                 }
             })
@@ -43,10 +42,10 @@ const CreateBlog = () =>{
 
             if(response.status == 200 && responseData.message == "Blog created successFully"){
                 notify(responseData.message)
+                reset()
                 setTimeout(() => {
                     navigate('/home')
                 }, 2000)
-                reset()
             }
    
         }
@@ -73,7 +72,7 @@ const CreateBlog = () =>{
 
                 <div className="flex flex-col justify-center items-center gap-4 m-4 w-[60%]">
                     <label htmlFor="img">Upload image:</label>
-                    <input type="file" placeholder="Upload your image here" id="img" {...register("img")} className="border-2 rounded-md w-[75%] text-center h-20"  />
+                    <input type="file" accept="image/*" placeholder="Upload your image here" id="img"  {...register("img")} className="border-2 rounded-md w-[75%] text-center h-20"  />
                 </div>
 
                 <div className="flex flex-col justify-center items-center gap-4 m-4 w-[60%]">

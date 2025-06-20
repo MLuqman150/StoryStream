@@ -7,7 +7,7 @@ const upload = require("../middlewares/imageMiddleware")
 router.post("/createBlog", protect, upload.single("image"), async (req, res) => {
     const body = req.body
     const file = req.file
-    console.log("File: ", file)
+    console.log("request ", req + " Body: ", req.body)
     try {
         // console.log("Starting....")
         const response = await blogService.createBlog(body, file)
