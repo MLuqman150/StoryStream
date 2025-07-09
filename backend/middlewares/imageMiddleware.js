@@ -1,10 +1,17 @@
+const fs = require('fs');
 const multer = require('multer');
-const storage = multer.memoryStorage({
+const path = require('path');
+const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/')
+        if (!fs.existsSync('./uploads')) {
+            fs.mkdirSync('./uploads');
+        }
+        cb(null, './uploads/')
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname + '-' + Date.now())
+        // let fileExt = file.originalname.split('.').pop();
+        // cb(null, file.fieldname + '-' + Date.now() + '.' + fileExt)
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
     }
 })
 

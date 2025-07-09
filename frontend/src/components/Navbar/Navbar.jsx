@@ -35,6 +35,7 @@ const Navbar = () => {
             </ul>
             <button className="md:block hidden bg-blue-500 text-white p-2 rounded-md font-bold hover:bg-blue-600 hover:cursor-pointer" onClick={logout}>Logout</button>
             {/* <div> */}
+             
             <IoMenu className="md:hidden block fixed right-0 mx-2 cursor-pointer text-2xl"  onClick={dropDown}  />
             {open ?<div className={open ? 'sm:block mt-5 right-0 shadow-[5px_5px_5px_rgba(0,0,0,0.25)]  border-2 p-2 rounded-xl position-absolute z-100' : 'hidden'}>
                 <Link to="/home"><option className="cursor-pointer hover:font-bold list-none">Home</option></Link>

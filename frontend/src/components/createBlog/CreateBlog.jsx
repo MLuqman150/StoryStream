@@ -23,7 +23,7 @@ const CreateBlog = () =>{
         console.log("Image Data: ",data.img[0])
         const formData = new FormData()
         formData.append("title", data.title)
-        formData.append("image", data.img ? data.img[0] : null)
+        formData.append("image", data.img ? data.img[0] : null )
         formData.append("content", data.content)
         formData.append("author", userId)
 
