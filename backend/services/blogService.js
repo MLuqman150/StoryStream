@@ -73,7 +73,12 @@ async function getBlogsByFollowing(body) {
 async function deleteBlog(id) { }
 
 async function getBlogByTitle(title) {
+    const blog = await Blog.findOne({title})
 
+    if(!blog){
+        throw new Error("No blog with this title found")
+    }
+    return {message: "Blog found", blog}
 }
 
 module.exports = { createBlog, getAllBlogs, getBlogsByAuthor, getBlogsByFollowing, deleteBlog, getBlogByTitle }
