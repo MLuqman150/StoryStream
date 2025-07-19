@@ -7,7 +7,9 @@ const upload = require("../middlewares/imageMiddleware")
 router.post("/createBlog", protect, upload.single("image"), async (req, res) => {
     const body = req.body
     const file = req.file
+
     console.log("Image ", req.body.image + " Body: ", req.body)
+    console.log("File: ", file)
     try {
         const response = await blogService.createBlog(body, file)
         res.status(200).json({message: response.message, blog: response.blog})
@@ -28,6 +30,17 @@ router.get("/getAllBlogs", protect, async (req, res) => {
         console.log("Error: ", err);
     }
 })
+
+// router.get("/uploads/:image",(req,res)=>{
+//     try{
+//         const image = req.params.image
+//         res.status(200).json({message: "Image fetched successfully", image: image})
+//     }
+//     catch(err){
+//         res.status(500).send("Unable to fetch image! Please try again.");
+//         console.log("Error: ", err);
+//     }
+// })
 
 router.get("/getByTitle/:title",async (req,res)=>{
     const title = req.params.title

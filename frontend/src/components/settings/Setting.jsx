@@ -6,7 +6,9 @@ const Setting = ()=>{
     return (
         <>
             <Navbar/>
-            Setting page
+            <div className="text-center m-4 text-lg font-extrabold cursor-pointer">
+                This Page is currently under development.
+            </div>
         </>
     )
 }

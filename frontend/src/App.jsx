@@ -22,14 +22,14 @@ function App() {
               <Route path="home" element={<Home />} />
               <Route path="following" element={<Following />} />
               <Route path="settings" element={<Setting />} />
-              <Route path="articleDetails" element={<ArticleDetails />} />
               <Route path="createBlog" element={<CreateBlog />} />
             </Route>
             <Route element={<PublicRoutes/>}>
               <Route path="/" element={<Login />} />
+              <Route path="signup" element={<SignUp />} />
             </Route>            
+            <Route path="articleDetails" element={<ArticleDetails />} />
             {/* <Route index path='/' element={<Login />} /> */}
-            <Route path="signup" element={<SignUp />} />
         </Routes>
         </AuthProvider>
       </BrowserRouter>

@@ -5,7 +5,9 @@ const Following = () =>{
     return (
         <>
             <Navbar/>
-            Following page
+            <div className="text-center m-4 text-lg font-extrabold cursor-pointer">
+                This Page is currently under development.
+            </div>
         </>
     )
 }

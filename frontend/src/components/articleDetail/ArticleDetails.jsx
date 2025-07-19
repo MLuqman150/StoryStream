@@ -1,8 +1,9 @@
-import React from "react"
+import React,{useEffect} from "react"
 import Navbar from "../Navbar/Navbar"
 import bundeno  from '../../assets/bundeno.png'
 
 const ArticleDetails = () => {
+
     return (
         <>
             <Navbar/>

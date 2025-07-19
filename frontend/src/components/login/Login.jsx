@@ -36,7 +36,7 @@ const Login = () => {
             if (response.status == 200 && responseData.message == "Login successful") {
                 notify(responseData.message)
                 login(responseData.token, responseData.email, responseData.id)
-                console.log(responseData.token, responseData.email, responseData.id)
+                // console.log(responseData.token, responseData.email, responseData.id)
                 setTimeout(() => {
                     navigate('/home')
                 }, 2000)

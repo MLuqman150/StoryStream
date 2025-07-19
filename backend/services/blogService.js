@@ -24,7 +24,7 @@ async function createBlog(body, file) {
 }
 
 async function getAllBlogs() {
-    const blogs = await Blog.find()
+    const blogs = await Blog.find().sort({_id: -1})
 
     // Pagination to be implemented
     if (!blogs) {
