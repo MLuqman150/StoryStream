@@ -20,7 +20,9 @@ const blogSchema = new mongoose.Schema({
     },
     slug: {
         type: String,
-        required: false
+        required: true,
+        unique: true,
+        lowercase: true
     },
     tags: [{
         type: String

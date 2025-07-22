@@ -42,10 +42,10 @@ router.get("/getAllBlogs", protect, async (req, res) => {
 //     }
 // })
 
-router.get("/getByTitle/:title",async (req,res)=>{
-    const title = req.params.title
+router.get("/getBySlug/:slug",async (req,res)=>{
+    const title = req.params.slug
     try{
-        const response = await blogService.getBlogByTitle(title)
+        const response = await blogService.getBlogBySlug(slug)
         res.status(200).json({message: response.message, blog: response.blog})
     }
     catch(err){

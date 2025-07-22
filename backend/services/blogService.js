@@ -10,11 +10,14 @@ async function createBlog(body, file) {
         throw new Error("Blog with this title already exists.")
     }
 
+    const slug = title.toLowerCase().replace(/\s+/g, "-")
+
     const newBlog = new Blog({
         title,
         image,
         content,
         author,
+        slug,
         tags
     })
 
@@ -72,8 +75,8 @@ async function getBlogsByFollowing(body) {
 }
 async function deleteBlog(id) { }
 
-async function getBlogByTitle(title) {
-    const blog = await Blog.findOne({title})
+async function getBlogBySlug(slug) {
+    const blog = await Blog.findOne({slug})
 
     if(!blog){
         throw new Error("No blog with this title found")
@@ -81,4 +84,4 @@ async function getBlogByTitle(title) {
     return {message: "Blog found", blog}
 }
 
-module.exports = { createBlog, getAllBlogs, getBlogsByAuthor, getBlogsByFollowing, deleteBlog, getBlogByTitle }
+module.exports = { createBlog, getAllBlogs, getBlogsByAuthor, getBlogsByFollowing, deleteBlog, getBlogBySlug }
