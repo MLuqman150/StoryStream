@@ -31,6 +31,18 @@ router.get("/getAllBlogs", protect, async (req, res) => {
     }
 })
 
+router.get("/getBySlug/:slug",async (req,res)=>{
+    const slug = req.params.slug
+    // console.log("Slug: ", slug)
+    try{
+        const response = await blogService.getBlogBySlug(slug)
+        res.status(200).json({message: response.message, blog: response.blog})
+    }
+    catch(err){
+        res.status(500).json({message: "Unable to fetch blog " + err.message})
+    }
+})
+
 // router.get("/uploads/:image",(req,res)=>{
 //     try{
 //         const image = req.params.image
@@ -42,15 +54,5 @@ router.get("/getAllBlogs", protect, async (req, res) => {
 //     }
 // })
 
-router.get("/getBySlug/:slug",async (req,res)=>{
-    const title = req.params.slug
-    try{
-        const response = await blogService.getBlogBySlug(slug)
-        res.status(200).json({message: response.message, blog: response.blog})
-    }
-    catch(err){
-        res.status(500).json({message: "Unable to fetch blog " + err.message})
-    }
-})
 
 module.exports = router
