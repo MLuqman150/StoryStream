@@ -28,7 +28,7 @@ function App() {
               <Route path="/" element={<Login />} />
               <Route path="signup" element={<SignUp />} />
             </Route>            
-            <Route path="articleDetails" element={<ArticleDetails />} />
+            <Route path="articleDetails/:slug" element={<ArticleDetails />} />
             {/* <Route index path='/' element={<Login />} /> */}
         </Routes>
         </AuthProvider>

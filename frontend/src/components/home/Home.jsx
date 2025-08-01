@@ -9,8 +9,26 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from 'react-toastify';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import {FaArrowUp} from "react-icons/fa"
 
 function Home() {
+
+    const [showButton, useShowButton] = useState(false)
+
+    const onScroll = () =>{
+        window.scrollY > 500 ? useShowButton(true) : useShowButton(false)
+    }
+
+    useEffect(() => {
+        window.addEventListener("scroll", onScroll)
+        return () => {
+            window.removeEventListener("scroll", onScroll)
+        }
+    })
+
+    const scrollToTop = () =>{
+        window.scrollTo({top: 0, behavior: "smooth"})
+    }
 
     const {token, logout} = useAuth()
 
@@ -68,7 +86,7 @@ function Home() {
             
                         <img src={blog.image ? `http://localhost:3000/`+blog.image.replace("/uploads/", ""): ""} alt={blog.title} className='w-full m-2 h-auto rounded-xl sm:h-auto' />
                         <div>
-                            <Link to="/articleDetails">
+                            <Link to={`/articleDetails/${blog.slug}`}>
                                 <h1 className='text-2xl font-bold font-mono text-blue-700 text-center hover:underline'>{blog.title}</h1>
                             </Link>
                             <p className='text-center'>{blog.content.split(" ").slice(0, 20).join(" ")}</p>
@@ -100,6 +118,7 @@ function Home() {
         	<Link to="/createBlog">
                 <div className='right-2 bottom-2 text-4xl font-bold text-white bg-blue-500 hover:bg-blue-600 cursor-pointer p-2 rounded-full w-16 h-16 text-center fixed'>+</div>
             </Link>
+            <FaArrowUp onClick={scrollToTop} className={showButton ? "fixed bottom-20 right-2 text-white bg-blue-500 hover:bg-blue-600 cursor-pointer p-2 rounded-full w-10 h-10 text-center" : "hidden"}/>
             
         </div>
     )
