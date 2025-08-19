@@ -57,6 +57,10 @@ function Home() {
                     notify(data.message)
                     setBlogs(data.blogs)
                 }
+                else if(response.status == 401){
+                    logout()
+                    navigate("/")
+                }
                 else{
                     notify(data.message)
                 }

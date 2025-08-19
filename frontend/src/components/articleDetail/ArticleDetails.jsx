@@ -1,8 +1,12 @@
 import React,{useEffect, useState} from "react"
 import Navbar from "../Navbar/Navbar"
 // import bundeno  from '../../assets/bundeno.png'
+import { BiLike, BiDislike } from "react-icons/bi";
+import { FaRegCommentAlt } from "react-icons/fa";
+import { CiShare2 } from "react-icons/ci";
 import { useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
+import Avatar from 'react-avatar';
 
 const ArticleDetails = () => {
 
@@ -26,7 +30,7 @@ const ArticleDetails = () => {
                 const data = await response.json()
                 console.log(data)
                 if(response.status == 200){
-                    console.log("Data: ",data)
+                    console.log("Data: ",data.blog)
                     notify(data.message)
                     setBlog(data.blog)
 
@@ -69,6 +73,26 @@ const ArticleDetails = () => {
                 pauseOnHover
                 theme="light"
             />
+            <div className="flex justify-center gap-4 my-6 ">
+                <BiLike className='mx-4 text-blue-700 cursor-pointer text-xl'  />
+                <BiDislike className='mx-4 text-blue-700 cursor-pointer text-xl' />
+                <FaRegCommentAlt className='mx-4 text-blue-700 cursor-pointer text-xl' /> 
+                <CiShare2 className='mx-4 text-blue-700 cursor-pointer text-xl' />
+            </div>
+            <div className="flex justify-around gap-5 my-4">
+              <div className="flex gap-2">
+                <Avatar name={blog.author?.name} round={true} size="40" />
+                <div className="flex flex-col">
+                    <p className="text-md font-bold">{blog.author?.name}</p>
+                    <div className="flex gap-2 text-gray-500 text-sm">
+                        <p>1.5k followers  </p>
+                        <p>157 following  </p>
+                    </div>
+                </div>
+              </div>  
+              <button className="bg-blue-700 text-white p-2 rounded-md cursor-pointer hover:bg-blue-200 hover:text-blue-700 hover:font-bold">Follow</button>  
+            </div>
+          
         </>           
     )
 }
