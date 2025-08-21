@@ -5,6 +5,11 @@ async function createBlog(body, file) {
     const { title, content, author, tags } = body
     const image = file ? `/uploads/${file.filename}` : null 
 
+    const user = await Users.findOne({ _id: author })
+    if (!user) {
+        throw new Error("No user with this name found")
+    }
+
     const existingBlog = await Blog.findOne({ title: title })
     if (existingBlog) {
         throw new Error("Blog with this title already exists.")
@@ -22,6 +27,10 @@ async function createBlog(body, file) {
     })
 
     await newBlog.save()
+
+    // Adding the reference of the blog to the user
+    user.createdBlogs.push(newBlog._id)
+    await user.save()
 
     return { message: "Blog created successFully", blog: newBlog }
 }
@@ -76,7 +85,7 @@ async function getBlogsByFollowing(body) {
 async function deleteBlog(id) { }
 
 async function getBlogBySlug(slug) {
-    const blog = await Blog.findOne({slug}).populate("author", "name")
+    const blog = await Blog.findOne({slug}).populate("author", "username")
 
     if(!blog){
         throw new Error("No blog with this title found")

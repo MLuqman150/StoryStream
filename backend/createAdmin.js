@@ -8,6 +8,7 @@ const createAdmin = async () => {
         const passwordHash = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);
         const user = new Users({
             name: "Admin",
+            username: "Admin",
             email: process.env.ADMIN_EMAIL,
             password: passwordHash,
             role: "admin"

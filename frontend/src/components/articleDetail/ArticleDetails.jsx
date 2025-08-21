@@ -7,6 +7,7 @@ import { CiShare2 } from "react-icons/ci";
 import { useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import Avatar from 'react-avatar';
+import { Link } from 'react-router-dom';
 
 const ArticleDetails = () => {
 
@@ -81,12 +82,12 @@ const ArticleDetails = () => {
             </div>
             <div className="flex justify-around gap-5 my-4">
               <div className="flex gap-2">
-                <Avatar name={blog.author?.name} round={true} size="40" />
+                <Avatar name={blog.author?.username} round={true} size="40" />
                 <div className="flex flex-col">
-                    <p className="text-md font-bold">{blog.author?.name}</p>
+                    <Link to={`/authorDetails/${blog.author?.username}`} className="text-md font-bold hover:underline cursor-pointer">{blog.author?.username}</Link>
                     <div className="flex gap-2 text-gray-500 text-sm">
-                        <p>1.5k followers  </p>
-                        <p>157 following  </p>
+                        <p>1.5k followers</p>
+                        <p>157 following</p>
                     </div>
                 </div>
               </div>  

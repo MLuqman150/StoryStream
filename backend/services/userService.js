@@ -38,7 +38,7 @@ async function login(body) {
 
 // function for user registration
 async function createUser(body) {
-    const { name, email, password } = body
+    const { name,username, email, password } = body
     const hashedPassword = await bcrypt.hash(password, 10)
 
     const userExists = Users.find({ email })
@@ -49,6 +49,7 @@ async function createUser(body) {
 
     const user = new Users({
         name,
+        username,
         email,
         password: hashedPassword,
         role: "user"
@@ -71,8 +72,8 @@ async function getAllUsers() {
     }
 }
 
-async function getUserByName(name) {
-    const user = await Users.find({ name })
+async function getAuthorByName(name) {
+    const user = await Users.find({username: name },{ password:0,  role:0 })
     if (!user) {
         throw new Error(`No user with this name ${name} found.`)
     }
@@ -86,5 +87,5 @@ module.exports = {
     login,
     createUser,
     getAllUsers,
-    getUserByName
+    getAuthorByName
 }

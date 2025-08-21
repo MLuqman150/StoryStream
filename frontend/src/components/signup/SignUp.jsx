@@ -71,6 +71,12 @@ function SignUp() {
                     {errors.name && <div className="text-red-500 text-center">{errors.name.message}</div>}
 
                     <div className="flex justify-center">
+                        <label htmlFor="username" className="font-bold mr-4 mt-5">Username: </label>
+                        <input id="username" type="text" {...register("username", { required: "Userame is required" })} placeholder="Username" className="w-[60%] p-2 rounded-xl mt-4" aria-invalid={errors.username ? "true" : "false"} />
+                    </div>
+                    {errors.username && <div className="text-red-500 text-center">{errors.username.message}</div>}
+
+                    <div className="flex justify-center">
                         <label htmlFor="email" className="font-bold mr-4 mt-5">Email: </label>
                         <input id="email" type="email" {...register("email", {
                             required: "Email Address is required", validate: (value) => {

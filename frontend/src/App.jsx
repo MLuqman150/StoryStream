@@ -5,6 +5,7 @@ import Following from './components/following/following.jsx'
 import Setting from './components/settings/Setting.jsx'
 import CreateBlog from './components/createBlog/CreateBlog.jsx'
 import ArticleDetails from './components/articleDetail/ArticleDetails.jsx'
+import AuthorDetails from './components/authorDetails/AuthorDetails.jsx'
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
 import ProtectedRoutes from './components/routes/ProtectedRoutes'
 import PublicRoutes from './components/routes/PublicRoutes.jsx'
@@ -23,6 +24,7 @@ function App() {
               <Route path="following" element={<Following />} />
               <Route path="settings" element={<Setting />} />
               <Route path="createBlog" element={<CreateBlog />} />
+              <Route path="authorDetails/:username" element={<AuthorDetails />} />
             </Route>
             <Route element={<PublicRoutes/>}>
               <Route path="/" element={<Login />} />

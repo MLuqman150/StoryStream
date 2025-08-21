@@ -44,11 +44,11 @@ router.get("/getUsers", isAdmin, protect, async (req, res) => {
     }
 })
 
-router.get("/getByName/:name", isAdmin, protect, async (req, res) => {
+router.get("/getAuthorByName/:name", protect, async (req, res) => {
     const name = req.params.name
     try {
-        const userByName = await userService.getUserByName(name)
-        res.status(200).send({ message: userByName.message, user: userByName.user })
+        const authorByName = await userService.getAuthorByName(name)
+        res.status(200).send({ message: authorByName.message, user: authorByName.user })
     }
     catch (err) {
         res.status(500).send(`Unable to get user ${name}! Please try again.`);
