@@ -8,16 +8,60 @@ import { useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import Avatar from 'react-avatar';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const ArticleDetails = () => {
 
     const [blog, setBlog] = useState({})
 
     const {slug} = useParams()
+
+    const {userId, token} = useAuth()
     
    const notify = (message) => {
             toast(message);
         }
+
+    const following = ()=>{
+        if (blog.author?.followers?.includes(userId)){
+            return true
+        }
+        else{
+            return false
+        }
+    }
+
+    const handleFollow = async () => {
+        const authorId = blog.author._id
+        try{
+            const response = await fetch("http://localhost:3000/auth/followUser",
+                {
+                    method: "PUT",
+                    body: JSON.stringify({"authorId":authorId, "userId": userId}),
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                }
+            )
+            const result = await response.json()
+            console.log(result)
+            if(response.status == 200){
+                notify(result.message)
+            }
+            else{
+                notify(result.message)
+            } 
+        }
+        catch(err){
+            notify(err.message)
+            console.log(err)
+        }
+    }
+    
+    const handleUnFollow = () =>{
+        console.log("Unfollowed")
+    }
 
     useEffect(()=>{
         const fetchBlog = async () =>{
@@ -47,6 +91,8 @@ const ArticleDetails = () => {
         }
         fetchBlog()
     },[slug])
+
+    console.log("Following ", following())
 
     return (
         <>
@@ -86,12 +132,17 @@ const ArticleDetails = () => {
                 <div className="flex flex-col">
                     <Link to={`/authorDetails/${blog.author?.username}`} className="text-md font-bold hover:underline cursor-pointer">{blog.author?.username}</Link>
                     <div className="flex gap-2 text-gray-500 text-sm">
-                        <p>1.5k followers</p>
-                        <p>157 following</p>
+                        <p>{blog.author?.followers?.length} followers</p>
+                        <p>{blog.author?.following?.length} following</p>
                     </div>
                 </div>
               </div>  
-              <button className="bg-blue-700 text-white p-2 rounded-md cursor-pointer hover:bg-blue-200 hover:text-blue-700 hover:font-bold">Follow</button>  
+              {following() == true?
+              <button onClick={handleUnFollow} className="bg-blue-700 text-white p-2 rounded-md cursor-pointer hover:bg-blue-200 hover:text-blue-700 hover:font-bold">Unfollow</button>
+              :
+              <button onClick={handleFollow} className="bg-blue-700 text-white p-2 rounded-md cursor-pointer hover:bg-blue-200 hover:text-blue-700 hover:font-bold">Follow</button>  
+              }
+
             </div>
           
         </>           

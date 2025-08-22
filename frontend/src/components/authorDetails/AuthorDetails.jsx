@@ -21,7 +21,7 @@ const AuthorDetails = () => {
         useEffect(()=>{
             const fetchBlog = async () =>{
                 try{
-                    console.log("Author Name: ", name)
+                    console.log("Author Name: ", username)
                     const response = await fetch(`http://localhost:3000/auth/getAuthorByName/${username}`,
                         {
                             method: "GET",
@@ -63,8 +63,8 @@ const AuthorDetails = () => {
                         <p className="font-bold text-gray-400">{author?.name}</p>
                     </div>
                     <div className="flex gap-2">
-                        <p className="text-blue-500">{author?.followers.length} followers</p>
-                        <p className="text-blue-500">{author?.following.length} following</p>
+                        <p className="text-blue-500">{author?.followers?.length} followers</p>
+                        <p className="text-blue-500">{author?.following?.length} following</p>
                     </div>
                 </div>
 

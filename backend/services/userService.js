@@ -41,7 +41,9 @@ async function createUser(body) {
     const { name,username, email, password } = body
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    const userExists = Users.find({ email })
+    const userExists = await Users.findOne({ email })
+
+    // console.log("User Exists: ", userExists)
 
     if (userExists) {
         return{message:"User with this email already exists."}
@@ -83,9 +85,33 @@ async function getAuthorByName(name) {
     }
 }
 
+async function followUser(body){
+    const {authorId, userId} = body
+
+    const author = await Users.findOne({ _id: authorId })
+    const user = await Users.findOne({ _id: userId })
+
+    if(!user || !author){
+        throw new Error("No user found with this name")
+    }
+
+    user.following.push(author._id)
+    author.followers.push(user._id)
+
+    await user.save()
+    await author.save()
+
+    return  {
+        message: `You are now following ${author.username}`,
+        success: true
+    }
+
+}
+
 module.exports = {
     login,
     createUser,
     getAllUsers,
-    getAuthorByName
+    getAuthorByName,
+    followUser
 }

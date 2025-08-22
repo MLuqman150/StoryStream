@@ -6,7 +6,8 @@ import { useAuth } from '../../context/AuthContext';
 const Navbar = () => {
     const isAuthenticated = useAuth().token
 
-    console.log(isAuthenticated)
+    // This is printing the token in the console
+    // console.log(isAuthenticated)
     const navigate = useNavigate();
 
     const {logout} = useAuth()

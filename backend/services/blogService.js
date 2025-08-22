@@ -85,7 +85,7 @@ async function getBlogsByFollowing(body) {
 async function deleteBlog(id) { }
 
 async function getBlogBySlug(slug) {
-    const blog = await Blog.findOne({slug}).populate("author", "username")
+    const blog = await Blog.findOne({slug}).populate("author", "username followers following")
 
     if(!blog){
         throw new Error("No blog with this title found")
