@@ -12,12 +12,73 @@ const AuthorDetails = () => {
     
         const {username} = useParams()
 
-        const {token, logout} = useAuth()
+        const {token, logout, userId} = useAuth()
         
         const notify = (message) => {
                 toast(message);
             }
-    
+
+        console.log("User ID: ", userId, "Author ID:", author._id, "Logic result: ",author?.followers?.includes(userId) )
+        
+        // function to follow the user
+        const handleFollow = async () => {
+            const authorId = author._id
+                try{
+                    const response = await fetch("http://localhost:3000/auth/followUser",
+                        {
+                            method: "PUT",
+                            body: JSON.stringify({"authorId":authorId, "userId": userId}),
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${token}`
+                            }
+                        }
+                    )
+                    const result = await response.json()
+                    console.log(result)
+                    if(response.status == 200){
+                        notify(result.message)
+                    }
+                    else{
+                        notify(result.message)
+                    } 
+                }
+                catch(err){
+                    notify(err.message)
+                    console.log(err)
+                }
+            }    
+        
+        // Function to unfollow the user 
+        const handleUnFollow = async () =>{
+            const authorId = author._id
+            try{
+
+                const response = await fetch("http://localhost:3000/auth/unFollowUser",
+                    {
+                        method: "PUT",
+                        body: JSON.stringify({"authorId":authorId, "userId": userId}),
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }
+                )
+                const result = await response.json()
+                console.log(result)
+                if(response.status == 200){
+                    notify(result.message)
+                }
+                else{
+                    notify(result.message)
+                } 
+            }
+            catch(err){
+                notify(err.message)
+                console.log(err)
+            }
+        }    
+
         useEffect(()=>{
             const fetchBlog = async () =>{
                 try{
@@ -66,6 +127,16 @@ const AuthorDetails = () => {
                         <p className="text-blue-500">{author?.followers?.length} followers</p>
                         <p className="text-blue-500">{author?.following?.length} following</p>
                     </div>
+                    <div>
+                        {(author?.followers?.includes(userId)) ? 
+                        <button className="bg-blue-700 text-white p-2 rounded-md cursor-pointer hover:bg-blue-200 hover:text-blue-700 hover:font-bold" onClick={handleUnFollow}>Unfollow</button>
+                        : 
+                        <button className="bg-blue-700 text-white p-2 rounded-md cursor-pointer hover:bg-blue-200 hover:text-blue-700 hover:font-bold" onClick={handleFollow}>Follow</button> }
+                    </div>
+                    <div>
+                        {author?.createdBlogs}
+                    </div>
+
                 </div>
 
                 <ToastContainer

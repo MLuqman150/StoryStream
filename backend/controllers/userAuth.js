@@ -66,4 +66,16 @@ router.put("/followUser", protect, async (req,res)=>{
     } 
 })
 
+router.put("/unFollowUser", protect, async (req,res)=>{
+    const body = req.body
+    // console.log("body: ",body)
+    try{
+        const response = await userService.unFollowUser(body)
+        res.status(200).send({message: response.message, success: response.success})
+    }
+    catch (e){
+        res.status(500).send(e.message)
+    } 
+})
+
 module.exports = router

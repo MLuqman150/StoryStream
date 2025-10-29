@@ -108,10 +108,45 @@ async function followUser(body){
 
 }
 
+async function unFollowUser(body){
+    const {authorId, userId} = body
+
+    // console.log("authorId: ",authorId, "userId: ",userId)
+    
+    const author = await Users.findOne({ _id: authorId })
+    const user = await Users.findOne({ _id: userId })
+
+    // console.log("author: ",author, "user: ",user)
+
+    if(!user || !author){
+        throw new Error("No user found with this name")
+    }
+
+    const updatedUser = await Users.updateMany({ _id: userId }, { $pull: { following: author._id } })
+    const updatedAuthor = await Users.updateMany({ _id: authorId }, { $pull: { followers: user._id } })
+
+    // console.log("updatedUser: ",updatedUser, "updatedAuthor: ",updatedAuthor)
+    // user.following.pop(author._id)
+    // author.followers.pop(user._id)
+
+    // await user.save()
+    // await author.save()
+
+    // await updatedUser.save()
+    // await updatedAuthor.save()
+
+    return  {
+        message: `You have unfollowed ${author.username}`,
+        success: true
+    }
+
+}
+
 module.exports = {
     login,
     createUser,
     getAllUsers,
     getAuthorByName,
-    followUser
+    followUser,
+    unFollowUser
 }

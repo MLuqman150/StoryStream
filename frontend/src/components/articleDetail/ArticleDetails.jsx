@@ -59,9 +59,34 @@ const ArticleDetails = () => {
         }
     }
     
-    const handleUnFollow = () =>{
-        console.log("Unfollowed")
-    }
+    const handleUnFollow = async () =>{
+        const authorId = blog.author._id
+        try{
+
+            const response = await fetch("http://localhost:3000/auth/unFollowUser",
+                {
+                    method: "PUT",
+                    body: JSON.stringify({"authorId":authorId, "userId": userId}),
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                }
+            )
+            const result = await response.json()
+            console.log(result)
+            if(response.status == 200){
+                notify(result.message)
+            }
+            else{
+                notify(result.message)
+            } 
+        }
+        catch(err){
+            notify(err.message)
+            console.log(err)
+        }
+    }    
 
     useEffect(()=>{
         const fetchBlog = async () =>{
