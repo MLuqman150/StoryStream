@@ -128,10 +128,16 @@ const AuthorDetails = () => {
                         <p className="text-blue-500">{author?.following?.length} following</p>
                     </div>
                     <div>
-                        {(author?.followers?.includes(userId)) ? 
-                        <button className="bg-blue-700 text-white p-2 rounded-md cursor-pointer hover:bg-blue-200 hover:text-blue-700 hover:font-bold" onClick={handleUnFollow}>Unfollow</button>
-                        : 
-                        <button className="bg-blue-700 text-white p-2 rounded-md cursor-pointer hover:bg-blue-200 hover:text-blue-700 hover:font-bold" onClick={handleFollow}>Follow</button> }
+                        {
+                        (userId !== author._id) ?
+                            (author?.followers?.includes(userId))  ? 
+                                <button className="bg-blue-700 text-white p-2 rounded-md cursor-pointer hover:bg-blue-200 hover:text-blue-700 hover:font-bold" onClick={handleUnFollow}>Unfollow</button>
+                                : 
+                                <button className="bg-blue-700 text-white p-2 rounded-md cursor-pointer hover:bg-blue-200 hover:text-blue-700 hover:font-bold" onClick={handleFollow}>Follow</button> 
+                            :
+                            <p className="text-red-500 cursor-not-allowed">Cannot follow yourself</p>
+                        }
+                
                     </div>
                     <div>
                         {author?.createdBlogs}

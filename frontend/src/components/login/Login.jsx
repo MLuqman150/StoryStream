@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +10,8 @@ const Login = () => {
 
     const { login } = useAuth()
     const { register, handleSubmit, reset, formState: { errors, isSubmitting }, setError } = useForm();
+
+    const [showPassword,setShowPassword] = useState(false)
 
     const navigate = useNavigate();
 
@@ -73,7 +76,11 @@ const Login = () => {
 
                     <div className="flex justify-center">
                         <label htmlFor="password" className="font-bold mr-4 mt-5">Password: </label>
-                        <input id="password" type="password" {...register("password", { required: "Password is required" })} placeholder="Password" className="w-[60%] p-2 rounded-xl mt-4" />
+                        <input id="password" type={showPassword ? "text" : "password"} {...register("password", { required: "Password is required" })} placeholder="Password" className="w-[60%] p-2 rounded-xl mt-4" />
+                    </div>
+                    <div className="flex justify-center mt-2 items-center gap-2">
+                        <input type="checkbox" checked={showPassword} onChange={() => setShowPassword(!showPassword)} />
+                        <label htmlFor="showPassword">Show Password</label>
                     </div>
                     {errors.password && <div className="text-red-500 text-center">{errors.password.message}</div>}
                     <div className="flex justify-center">
