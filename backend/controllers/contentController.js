@@ -43,6 +43,19 @@ router.get("/getBySlug/:slug",async (req,res)=>{
     }
 })
 
+router.get("/getByAuthor", protect , async (req,res)=>{
+    try{
+        const body = req.body
+        const query = req.query
+        // console.log("Query: ", query)
+        const response = await blogService.getBlogsByAuthor(body,query)
+        res.status(200).json({message: response.message, blogs: response.blogs})
+    }
+    catch(err){
+        res.status(500).json({message: "Unable to fetch blog " + err.message})
+    }
+})
+
 // router.get("/uploads/:image",(req,res)=>{
 //     try{
 //         const image = req.params.image

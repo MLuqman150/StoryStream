@@ -1,5 +1,7 @@
 const Blog = require('../models/blog.model')
 const Users = require('../models/user.model')
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 async function createBlog(body, file) {
     const { title, content, author, tags } = body
@@ -47,14 +49,17 @@ async function getAllBlogs() {
 
 async function getBlogsByAuthor(body, query) {
     const author = body.author
-    const { page, pageSize } = query
+    let { page, pageSize } = query
 
+    const authorId = new ObjectId(author)
+    page = Number(page)
+    pageSize = Number(pageSize)
     // const blogs = await Blog.find({ author: author })
 
     const blogs = await Blog.aggregate([
         {
             $match: {
-                author: author
+                author: authorId
             }
         },
         {
@@ -67,7 +72,8 @@ async function getBlogsByAuthor(body, query) {
 
     // pagination to be implemented
     if (!blogs) {
-        throw new Error("Currently there is no blog by this author")
+        return {message: "Currently this author have not posted any blog."}
+        // throw new Error("Currently there is no blog by this author")
     }
 
     return { message: "All the Blogs by this author", blogs }

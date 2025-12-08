@@ -5,6 +5,7 @@ import {useEffect, useState} from "react"
 import { toast, ToastContainer } from 'react-toastify';
 import { useAuth } from '../../context/AuthContext';
 import Avatar from 'react-avatar';
+import AuthorBlog from "./AuthorBlog";
 
 const AuthorDetails = () => {
     
@@ -79,6 +80,8 @@ const AuthorDetails = () => {
             }
         }    
 
+        const authorId = author?.createdBlogs
+
         useEffect(()=>{
             const fetchBlog = async () =>{
                 try{
@@ -116,7 +119,7 @@ const AuthorDetails = () => {
     return (
         <div>
             <Navbar/>`
-            <div className="flex justify-center">
+            <div className="flex justify-center flex-col">
                 <div className="flex flex-col gap-2 items-center">
                     <Avatar name={author?.username} round={true} size="60" />
                     <div className="flex flex-col items-center">
@@ -139,9 +142,9 @@ const AuthorDetails = () => {
                         }
                 
                     </div>
-                    <div>
-                        {author?.createdBlogs}
-                    </div>
+                    {/* <div> */}
+                        {/* {author?.createdBlogs} */}
+                    {/* </div> */}
 
                 </div>
 
@@ -157,6 +160,9 @@ const AuthorDetails = () => {
                     pauseOnHover
                     theme="light"
                 />
+                
+                <AuthorBlog data = {{authorId}}   />
+                
             </div>
         </div>
     )
