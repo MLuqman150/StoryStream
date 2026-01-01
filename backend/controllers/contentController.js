@@ -43,7 +43,7 @@ router.get("/getBySlug/:slug",async (req,res)=>{
     }
 })
 
-router.get("/getByAuthor", protect , async (req,res)=>{
+router.get("/getBlogByAuthor" , async (req,res)=>{
     try{
         const body = req.body
         const query = req.query

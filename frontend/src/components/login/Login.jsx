@@ -13,6 +13,8 @@ const Login = () => {
 
     const [showPassword,setShowPassword] = useState(false)
 
+    const [loading, setLoading] = useState(false)
+
     const navigate = useNavigate();
 
     const notify = (message) => {
@@ -20,6 +22,7 @@ const Login = () => {
     }
 
     const onSubmit = async (data) => {
+        setLoading(true)
         try {
             console.log(isSubmitting)
             const response = await fetch("http://localhost:3000/auth/login",
@@ -31,6 +34,8 @@ const Login = () => {
                     }
                 }
             )
+
+            // console.log(loading)
 
             const responseData = await response.json()
 
@@ -59,6 +64,7 @@ const Login = () => {
             setError("root", {
                 message: error.message
             })
+            setLoading(false)
         }
         // console.log(data);
     }
@@ -84,7 +90,7 @@ const Login = () => {
                     </div>
                     {errors.password && <div className="text-red-500 text-center">{errors.password.message}</div>}
                     <div className="flex justify-center">
-                        <button type="submit" disabled={isSubmitting} className="bg-blue-500 text-white p-2 rounded-xl mt-4 w-[40%] hover:bg-blue-600 hover:cursor-pointer">
+                        <button type="submit" disabled={loading} className="bg-blue-500 text-white p-2 rounded-xl mt-4 w-[40%] hover:bg-blue-600 hover:cursor-pointer">
                             {isSubmitting ? 'loading...' : 'Submit'}
                         </button>
                     </div>
