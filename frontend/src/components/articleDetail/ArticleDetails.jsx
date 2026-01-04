@@ -9,6 +9,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import Avatar from 'react-avatar';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useLoading } from '../../context/LoadingContext';
 
 const ArticleDetails = () => {
 
@@ -17,6 +18,8 @@ const ArticleDetails = () => {
     const {slug} = useParams()
 
     const {userId, token} = useAuth()
+    
+    const {showLoading, hideLoading} = useLoading()
     
    const notify = (message) => {
             toast(message);
@@ -89,6 +92,7 @@ const ArticleDetails = () => {
     }    
 
     useEffect(()=>{
+        showLoading()
         const fetchBlog = async () =>{
             try{
                 console.log("Slug: ", slug)
@@ -101,15 +105,18 @@ const ArticleDetails = () => {
                 console.log(data)
                 if(response.status == 200){
                     console.log("Data: ",data.blog)
+                    hideLoading()
                     notify(data.message)
                     setBlog(data.blog)
 
                 }
                 else{
                     notify(data.message)
+                    hideLoading()
                 }
             }
             catch(err){
+                hideLoading()
                 notify(err.message)
                 console.log(err)
             }    

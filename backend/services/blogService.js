@@ -47,8 +47,8 @@ async function getAllBlogs() {
     return { message: "All the Blogs", blogs }
 }
 
-async function getBlogsByAuthor(body, query) {
-    const author = body.author
+async function getBlogsByAuthor(authorParam, query) {
+    const author = authorParam
     let { page, pageSize } = query
 
     const authorId = new ObjectId(author)

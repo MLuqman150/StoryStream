@@ -10,29 +10,37 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom'
 import ProtectedRoutes from './components/routes/ProtectedRoutes'
 import PublicRoutes from './components/routes/PublicRoutes.jsx'
 import {AuthProvider} from './context/AuthContext.jsx'
+import {LoadingProvider} from './context/LoadingContext.jsx'
+// import Loader from './components/loader/Loader'
+// import { useLoading } from './context/LoadingContext'
+import GlobalLoader from './components/loader/GlobalLoader'
 
 function App() {
-
+    
 
   return (
     <>
       <BrowserRouter>
         <AuthProvider>
-          <Routes>
-            <Route element={<ProtectedRoutes/>}>
-              <Route path="home" element={<Home />} />
-              <Route path="following" element={<Following />} />
-              <Route path="settings" element={<Setting />} />
-              <Route path="createBlog" element={<CreateBlog />} />
-              <Route path="authorDetails/:username" element={<AuthorDetails />} />
-            </Route>
-            <Route element={<PublicRoutes/>}>
-              <Route path="/" element={<Login />} />
-              <Route path="signup" element={<SignUp />} />
-            </Route>            
-            <Route path="articleDetails/:slug" element={<ArticleDetails />} />
-            {/* <Route index path='/' element={<Login />} /> */}
-        </Routes>
+          <LoadingProvider>
+            {/* {useLoading().loading && <Loader />} */}
+            <GlobalLoader />
+            <Routes>
+              <Route element={<ProtectedRoutes/>}>
+                <Route path="home" element={<Home />} />
+                <Route path="following" element={<Following />} />
+                <Route path="settings" element={<Setting />} />
+                <Route path="createBlog" element={<CreateBlog />} />
+                <Route path="authorDetails/:username" element={<AuthorDetails />} />
+              </Route>
+              <Route element={<PublicRoutes/>}>
+                <Route path="/" element={<Login />} />
+                <Route path="signup" element={<SignUp />} />
+              </Route>            
+              <Route path="articleDetails/:slug" element={<ArticleDetails />} />
+              {/* <Route index path='/' element={<Login />} /> */}
+            </Routes>
+          </LoadingProvider>
         </AuthProvider>
       </BrowserRouter>
     </>

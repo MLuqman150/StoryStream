@@ -43,12 +43,12 @@ router.get("/getBySlug/:slug",async (req,res)=>{
     }
 })
 
-router.get("/getBlogByAuthor" , async (req,res)=>{
+router.get("/getBlogByAuthor/:authorId" , async (req,res)=>{
     try{
-        const body = req.body
+        const author = req.params.authorId
         const query = req.query
-        // console.log("Query: ", query)
-        const response = await blogService.getBlogsByAuthor(body,query)
+        // console.log("Params: ", author)
+        const response = await blogService.getBlogsByAuthor(author,query)
         res.status(200).json({message: response.message, blogs: response.blogs})
     }
     catch(err){

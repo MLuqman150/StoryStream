@@ -6,10 +6,14 @@ import { toast, ToastContainer } from 'react-toastify';
 import { useAuth } from '../../context/AuthContext';
 import Avatar from 'react-avatar';
 import AuthorBlog from "./AuthorBlog";
+// import Loader from '../loader/Loader'
+import { useLoading } from '../../context/LoadingContext';
 
 const AuthorDetails = () => {
     
         const [author, setAuthor] = useState({})
+
+        const { showLoading, hideLoading} = useLoading()
     
         const {username} = useParams()
 
@@ -80,9 +84,13 @@ const AuthorDetails = () => {
             }
         }    
 
-        const authorId = author?.createdBlogs
+        // const author_Id = author?.createdBlogs
+        const authorId = author._id
+        console.log("Author ID: ", authorId)
 
         useEffect(()=>{
+            showLoading()
+            
             const fetchBlog = async () =>{
                 try{
                     console.log("Author Name: ", username)
@@ -99,17 +107,20 @@ const AuthorDetails = () => {
                     console.log(data)
                     if(response.status == 200){
                         console.log("Data: ",data)
+                        hideLoading()
                         notify(data.message)
                         setAuthor(data.user[0])
     
                     }
                     else{
+                        hideLoading()
                         notify(data.message)
                     }
                 }
                 catch(err){
                     notify(err.message)
                     console.log(err)
+                    hideLoading()
                 }    
             }
             fetchBlog()
@@ -119,6 +130,7 @@ const AuthorDetails = () => {
     return (
         <div>
             <Navbar/>`
+            
             <div className="flex justify-center flex-col">
                 <div className="flex flex-col gap-2 items-center">
                     <Avatar name={author?.username} round={true} size="60" />
@@ -160,8 +172,9 @@ const AuthorDetails = () => {
                     pauseOnHover
                     theme="light"
                 />
+
+                {author?._id && <AuthorBlog authorId = {author._id} />}
                 
-                <AuthorBlog data = {{authorId}}   />
                 
             </div>
         </div>

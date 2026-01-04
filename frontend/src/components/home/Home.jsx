@@ -10,10 +10,13 @@ import { toast, ToastContainer } from 'react-toastify';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import {FaArrowUp} from "react-icons/fa"
+import { useLoading } from '../../context/LoadingContext';
 
 function Home() {
 
     const [showButton, useShowButton] = useState(false)
+
+    const {showLoading, hideLoading} = useLoading()
 
     const onScroll = () =>{
         window.scrollY > 500 ? useShowButton(true) : useShowButton(false)
@@ -40,6 +43,7 @@ function Home() {
     const [blogs, setBlogs] = useState([])
     
     useEffect(()=>{
+        showLoading()
         const fetchBlogs = async () =>{
             try{
                 const response = await fetch("http://localhost:3000/blog/getAllBlogs",
@@ -54,6 +58,7 @@ function Home() {
                 const data = await response.json()
                 console.log(data)
                 if(response.status == 200){
+                    hideLoading()
                     notify(data.message)
                     setBlogs(data.blogs)
                 }
@@ -62,6 +67,7 @@ function Home() {
                     navigate("/")
                 }
                 else{
+                    hideLoading()
                     notify(data.message)
                 }
             }
@@ -70,6 +76,7 @@ function Home() {
                 //     logout()
                 //     navigate("/")
                 // }
+                hideLoading()
                 notify(err.message)
                 console.log(err)
             }    
