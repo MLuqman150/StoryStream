@@ -13,7 +13,7 @@ const AuthorDetails = () => {
     
         const [author, setAuthor] = useState({})
 
-        const { showLoading, hideLoading} = useLoading()
+        const {loading, showLoading, hideLoading} = useLoading()
     
         const {username} = useParams()
 
@@ -129,53 +129,52 @@ const AuthorDetails = () => {
 
     return (
         <div>
-            <Navbar/>`
-            
+            <Navbar/>          
             <div className="flex justify-center flex-col">
-                <div className="flex flex-col gap-2 items-center">
-                    <Avatar name={author?.username} round={true} size="60" />
-                    <div className="flex flex-col items-center">
-                        <p className="font-bold text-xl text-gray-500">@{author?.username}</p>
-                        <p className="font-bold text-gray-400">{author?.name}</p>
-                    </div>
-                    <div className="flex gap-2">
-                        <p className="text-blue-500">{author?.followers?.length} followers</p>
-                        <p className="text-blue-500">{author?.following?.length} following</p>
-                    </div>
-                    <div>
-                        {
-                        (userId !== author._id) ?
-                            (author?.followers?.includes(userId))  ? 
-                                <button className="bg-blue-700 text-white p-2 rounded-md cursor-pointer hover:bg-blue-200 hover:text-blue-700 hover:font-bold" onClick={handleUnFollow}>Unfollow</button>
-                                : 
-                                <button className="bg-blue-700 text-white p-2 rounded-md cursor-pointer hover:bg-blue-200 hover:text-blue-700 hover:font-bold" onClick={handleFollow}>Follow</button> 
-                            :
-                            <p className="text-red-500 cursor-not-allowed">Cannot follow yourself</p>
-                        }
-                
-                    </div>
-                    {/* <div> */}
-                        {/* {author?.createdBlogs} */}
-                    {/* </div> */}
+                        <div className="flex flex-col gap-2 items-center">
+                            <Avatar name={author?.username} round={true} size="60" />
+                            <div className="flex flex-col items-center">
+                                <p className="font-bold text-xl text-gray-500">@{author?.username}</p>
+                                <p className="font-bold text-gray-400">{author?.name}</p>
+                            </div>
+                            <div className="flex gap-2">
+                                <p className="text-blue-500">{author?.followers?.length} followers</p>
+                                <p className="text-blue-500">{author?.following?.length} following</p>
+                            </div>
+                            <div>
+                                {
+                                (userId !== author._id) ?
+                                    (author?.followers?.includes(userId))  ? 
+                                        <button className="bg-blue-700 text-white p-2 rounded-md cursor-pointer hover:bg-blue-200 hover:text-blue-700 hover:font-bold" onClick={handleUnFollow}>Unfollow</button>
+                                        : 
+                                        <button className="bg-blue-700 text-white p-2 rounded-md cursor-pointer hover:bg-blue-200 hover:text-blue-700 hover:font-bold" onClick={handleFollow}>Follow</button> 
+                                    :
+                                    <p className="text-red-500 cursor-not-allowed">Cannot follow yourself</p>
+                                }
+                        
+                            </div>
+                            {/* <div> */}
+                                {/* {author?.createdBlogs} */}
+                            {/* </div> */}
 
-                </div>
+                        </div>
 
-                <ToastContainer
-                    position="top-right"
-                    autoClose={3000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick={false}
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
-                />
+                        <ToastContainer
+                            position="top-right"
+                            autoClose={3000}
+                            hideProgressBar={false}
+                            newestOnTop={false}
+                            closeOnClick={false}
+                            rtl={false}
+                            pauseOnFocusLoss
+                            draggable
+                            pauseOnHover
+                            theme="light"
+                        />
 
-                {author?._id && <AuthorBlog authorId = {author._id} />}
-                
-                
+                        {author?._id && <AuthorBlog authorId = {author._id} />}
+                        
+                        
             </div>
         </div>
     )
