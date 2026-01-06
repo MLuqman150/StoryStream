@@ -122,8 +122,8 @@ async function unFollowUser(body){
         throw new Error("No user found with this name")
     }
 
-    const updatedUser = await Users.updateMany({ _id: userId }, { $pull: { following: author._id } })
-    const updatedAuthor = await Users.updateMany({ _id: authorId }, { $pull: { followers: user._id } })
+    const updatedUser = await Users.updateOne({ _id: userId }, { $pull: { following: author._id } })
+    const updatedAuthor = await Users.updateOne({ _id: authorId }, { $pull: { followers: user._id } })
 
     // console.log("updatedUser: ",updatedUser, "updatedAuthor: ",updatedAuthor)
     // user.following.pop(author._id)

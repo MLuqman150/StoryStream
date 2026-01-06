@@ -99,4 +99,82 @@ async function getBlogBySlug(slug) {
     return {message: "Blog found", blog}
 }
 
-module.exports = { createBlog, getAllBlogs, getBlogsByAuthor, getBlogsByFollowing, deleteBlog, getBlogBySlug }
+// Implemet the remain fix to the code
+async function likeBlog(body){
+    const {userId, blogId} = body
+
+    const user = await Users.findOne({_id: userId})
+    const blog = await Blog.findOne({_id: blogId})
+
+    if(!user){
+        throw new Error("No user found with this id")
+    }
+    if(!blog){
+        throw new Error("No blog found with this id")
+    }
+
+    if(user.likedBlogs.includes(blog._id)){
+        return {
+            message: "You already liked the blog"
+        }
+    }
+
+    if(user.disLikedBlogs.includes(blog._id)){
+        const updatedUser = await Users.updateOne({ _id: userId }, { $pull: { disLikedBlogs: blog._id } })
+        const updatedBlog = await Blog.updateOne({ _id: blogId }, { $pull: { dislikes: user._id } })
+    }
+
+    const updatedUser = await Users.updateOne({ _id: userId }, { $push: { likedBlogs: blog._id } })
+    const updatedBlog = await Blog.updateOne({ _id: blogId }, { $push: { likes: user._id } })
+
+    // user.likedBlogs.push(blog._id)
+    // blog.likes.push(user._id)
+
+    // await user.save()
+    // await blog.save()
+
+    return {
+        message: "Great you found this interesting",
+        success: true
+    }
+}
+
+async function dislikeBlog(body){
+    const {userId, blogId} = body
+
+    const user = await Users.findOne({_id: userId})
+    const blog = await Blog.findOne({_id: blogId})
+
+    if(!user){
+        throw new Error("No user found with this id")
+    }
+
+    if(!blog){
+        throw new Error("No blog found with this id")
+    }
+
+    if(user.disLikedBlogs.includes(blog._id)){
+        return {
+            message: "You already disliked the blog"
+        }
+    }
+
+    if(user.likedBlogs.includes(blog._id)){
+        const updatedUser = await Users.updateOne({ _id: userId }, { $pull: { likedBlogs: blog._id } })
+        const updatedBlog = await Blog.updateOne({ _id: blogId }, { $pull: { likes: user._id } })
+    }
+
+    // user.disLikedBlogs.push(blog._id)
+    // blog.dislikes.push(user._id)
+    // await user.save()
+    // await blog.save()
+    const updatedUser = await Users.updateOne({ _id: userId }, { $push: { disLikedBlogs: blog._id } })
+    const updatedBlog = await Blog.updateOne({ _id: blogId }, { $push: { dislikes: user._id } })
+
+    return {
+        message: "You disliked the blog",
+        success: true
+    }
+}
+
+module.exports = { createBlog, getAllBlogs, getBlogsByAuthor, getBlogsByFollowing, deleteBlog, getBlogBySlug,likeBlog, dislikeBlog }
