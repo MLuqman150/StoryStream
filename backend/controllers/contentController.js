@@ -56,6 +56,28 @@ router.get("/getBlogByAuthor/:authorId" , async (req,res)=>{
     }
 })
 
+router.post("/likeBlog", async (req,res)=>{
+    try{
+        const body = req.body
+        const response = await blogService.likeBlog(body)
+        res.status(200).json({message: response.message, success: response.success})
+    }
+    catch(err){
+        res.status(500).json({message: "Unable to fetch blog " + err.message})
+    }
+})
+
+router.post("/disLikeBlog", async (req,res)=>{
+    try{
+        const body = req.body
+        const response = await blogService.disLikeBlog(body)
+        res.status(200).json({message: response.message, success: response.success})
+    }
+    catch(err){
+        res.status(500).json({message: "Unable to fetch blog " + err.message})
+    }
+})
+
 // router.get("/uploads/:image",(req,res)=>{
 //     try{
 //         const image = req.params.image

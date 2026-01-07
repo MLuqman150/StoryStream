@@ -1,7 +1,6 @@
 import React,{useEffect, useState} from "react"
 import Navbar from "../Navbar/Navbar"
-// import bundeno  from '../../assets/bundeno.png'
-import { BiLike, BiDislike } from "react-icons/bi";
+import { BiLike, BiDislike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
 import { FaRegCommentAlt } from "react-icons/fa";
 import { CiShare2 } from "react-icons/ci";
 import { useParams } from 'react-router-dom';
