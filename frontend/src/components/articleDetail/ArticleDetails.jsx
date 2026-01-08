@@ -33,6 +33,7 @@ const ArticleDetails = () => {
         }
     }
 
+    // function to handle the request to follow the author
     const handleFollow = async () => {
         const authorId = blog.author._id
         try{
@@ -61,6 +62,7 @@ const ArticleDetails = () => {
         }
     }
     
+    // function to handle the request to unfollow the author
     const handleUnFollow = async () =>{
         const authorId = blog.author._id
         try{
@@ -88,7 +90,59 @@ const ArticleDetails = () => {
             notify(err.message)
             console.log(err)
         }
-    }    
+    }
+    
+    // function to handle the request to like the blog
+    const handleLike = async () =>{
+        try{
+            const response = await fetch("http://localhost:3000/blog/likeBlog",{
+                method: "POST",
+                body: JSON.stringify({"userId":userId, "blogId": blog._id}),
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+            const result = await response.json()
+            console.log(result)
+            if(response.status == 200){
+                notify(result.message)
+            }
+            else{
+                notify(result.message)
+            }
+        }
+        catch(error){
+            notify(error.message)
+            console.log(error)
+        }
+    }
+    
+    // function to handle the request to unlike the blog
+    const handleDisLike = async () =>{
+        try{
+            const response = await fetch("http://localhost:3000/blog/disLikeBlog",{
+                method: "POST",
+                body: JSON.stringify({"userId":userId, "blogId": blog._id}),
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+            const result = await response.json()
+            console.log(result)
+            if(response.status == 200){
+                notify(result.message)
+            }
+            else{
+                notify(result.message)
+            }
+        }
+        catch(error){
+            notify(error.message)
+            console.log(error)
+        }
+    }
 
     useEffect(()=>{
         showLoading()
@@ -103,7 +157,7 @@ const ArticleDetails = () => {
                 const data = await response.json()
                 console.log(data)
                 if(response.status == 200){
-                    console.log("Data: ",data.blog)
+                    console.log("Blog-Data: ",data.blog)
                     hideLoading()
                     notify(data.message)
                     setBlog(data.blog)
@@ -152,8 +206,23 @@ const ArticleDetails = () => {
                 theme="light"
             />
             <div className="flex justify-center gap-4 my-6 ">
-                <BiLike className='mx-4 text-blue-700 cursor-pointer text-xl'  />
-                <BiDislike className='mx-4 text-blue-700 cursor-pointer text-xl' />
+                {blog.likes?.includes(userId) ?
+                    <button onClick={handleLike} className="flex items-center">
+                        <BiSolidLike className='mx-2 text-blue-700 cursor-pointer text-xl' /> <strong>{blog.likes?.length}</strong>
+                    </button>  :                
+                    <button onClick={handleLike} className="flex items-center">
+                        <BiLike className='mx-2 text-blue-700 cursor-pointer text-xl'  /> <strong>{blog.likes?.length}</strong>
+                    </button>
+                }
+                {
+                    blog.dislikes?.includes(userId) ?
+                    <button onClick={handleDisLike} className="flex items-center">
+                        <BiSolidDislike className='mx-2 text-blue-700 cursor-pointer text-xl' /> <strong>{blog.dislikes?.length}</strong>
+                    </button>  :
+                    <button onClick={handleDisLike} className="flex items-center">
+                        <BiDislike className='mx-2 text-blue-700 cursor-pointer text-xl' /> <strong>{blog.dislikes?.length}</strong>
+                    </button>
+                }
                 <FaRegCommentAlt className='mx-4 text-blue-700 cursor-pointer text-xl' /> 
                 <CiShare2 className='mx-4 text-blue-700 cursor-pointer text-xl' />
             </div>

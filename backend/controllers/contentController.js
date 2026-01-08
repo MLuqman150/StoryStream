@@ -56,7 +56,7 @@ router.get("/getBlogByAuthor/:authorId" , async (req,res)=>{
     }
 })
 
-router.post("/likeBlog", async (req,res)=>{
+router.post("/likeBlog",protect, async (req,res)=>{
     try{
         const body = req.body
         const response = await blogService.likeBlog(body)
@@ -67,7 +67,7 @@ router.post("/likeBlog", async (req,res)=>{
     }
 })
 
-router.post("/disLikeBlog", async (req,res)=>{
+router.post("/disLikeBlog", protect, async (req,res)=>{
     try{
         const body = req.body
         const response = await blogService.disLikeBlog(body)
