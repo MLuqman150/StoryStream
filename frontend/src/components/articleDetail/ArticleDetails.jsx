@@ -9,6 +9,7 @@ import Avatar from 'react-avatar';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useLoading } from '../../context/LoadingContext';
+import { formatCount } from '../../utils/formatNumber';
 
 const ArticleDetails = () => {
 
@@ -208,19 +209,19 @@ const ArticleDetails = () => {
             <div className="flex justify-center gap-4 my-6 ">
                 {blog.likes?.includes(userId) ?
                     <button onClick={handleLike} className="flex items-center">
-                        <BiSolidLike className='mx-2 text-blue-700 cursor-pointer text-xl' /> <strong>{blog.likes?.length}</strong>
+                        <BiSolidLike className='mx-2 text-blue-700 cursor-pointer text-xl' /> <strong>{formatCount(blog.likes?.length)}</strong>
                     </button>  :                
                     <button onClick={handleLike} className="flex items-center">
-                        <BiLike className='mx-2 text-blue-700 cursor-pointer text-xl'  /> <strong>{blog.likes?.length}</strong>
+                        <BiLike className='mx-2 text-blue-700 cursor-pointer text-xl'  /> <strong>{formatCount(blog.likes?.length)}</strong>
                     </button>
                 }
                 {
                     blog.dislikes?.includes(userId) ?
                     <button onClick={handleDisLike} className="flex items-center">
-                        <BiSolidDislike className='mx-2 text-blue-700 cursor-pointer text-xl' /> <strong>{blog.dislikes?.length}</strong>
+                        <BiSolidDislike className='mx-2 text-blue-700 cursor-pointer text-xl' /> <strong>{formatCount(blog.dislikes?.length)}</strong>
                     </button>  :
                     <button onClick={handleDisLike} className="flex items-center">
-                        <BiDislike className='mx-2 text-blue-700 cursor-pointer text-xl' /> <strong>{blog.dislikes?.length}</strong>
+                        <BiDislike className='mx-2 text-blue-700 cursor-pointer text-xl' /> <strong>{formatCount(blog.dislikes?.length)}</strong>
                     </button>
                 }
                 <FaRegCommentAlt className='mx-4 text-blue-700 cursor-pointer text-xl' /> 
