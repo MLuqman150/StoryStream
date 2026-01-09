@@ -183,4 +183,31 @@ async function disLikeBlog(body){
     }
 }
 
-module.exports = { createBlog, getAllBlogs, getBlogsByAuthor, getBlogsByFollowing, deleteBlog, getBlogBySlug,likeBlog, disLikeBlog }
+async function addComment(body){
+    const {user, comment, blogId} = body
+    
+    const blog = await Blog.findOne({_id: blogId})
+    const userExists = await Users.findOne({_id: user})
+    
+    if(!blog){
+        throw new Error("No blog found with this id")
+    }
+    
+    if(!userExists){
+        throw new Error("No User found with this id")
+    }
+    
+    const commentObject = {
+        user,
+        comment
+    }
+
+    const updatedBlog = await Blog.updateOne({ _id: blogId },{ $push: { comments: commentObject }})
+
+    return {
+        message: "Comment added successfully",
+        success: true
+    }
+}
+
+module.exports = { createBlog, getAllBlogs, getBlogsByAuthor, getBlogsByFollowing, deleteBlog, getBlogBySlug,likeBlog, disLikeBlog, addComment }

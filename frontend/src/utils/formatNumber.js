@@ -1,4 +1,3 @@
-// Implement this in the articles details page
 
 export function formatCount(number){
     if (number < 1000){

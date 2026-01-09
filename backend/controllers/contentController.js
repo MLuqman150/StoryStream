@@ -78,6 +78,17 @@ router.post("/disLikeBlog", protect, async (req,res)=>{
     }
 })
 
+router.post("/addComment", async (req,res)=>{
+    try{
+        const body = req.body
+        const response = await blogService.addComment(body)
+        res.status(200).json({message: response.message, success: response.success})
+    }
+    catch(err){
+        res.status(500).json({message: "Unable to add comment " + err.message})
+    }
+})
+
 // router.get("/uploads/:image",(req,res)=>{
 //     try{
 //         const image = req.params.image
