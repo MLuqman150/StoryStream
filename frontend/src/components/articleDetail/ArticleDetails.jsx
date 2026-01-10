@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from "react"
 import Navbar from "../Navbar/Navbar"
 import { BiLike, BiDislike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
-import { FaRegCommentAlt } from "react-icons/fa";
+// import { FaRegCommentAlt } from "react-icons/fa";
 import { CiShare2 } from "react-icons/ci";
 import { useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
@@ -14,6 +14,8 @@ import { formatCount } from '../../utils/formatNumber';
 const ArticleDetails = () => {
 
     const [blog, setBlog] = useState({})
+
+    const [comment, setComment] = useState("")
 
     const {slug} = useParams()
 
@@ -32,6 +34,10 @@ const ArticleDetails = () => {
         else{
             return false
         }
+    }
+
+    const handleCommentChange = (e) => {
+        setComment(e.target.value)
     }
 
     // function to handle the request to follow the author
@@ -145,6 +151,33 @@ const ArticleDetails = () => {
         }
     }
 
+    // Function to add the comment
+    const addComment = async () =>{
+        try{
+            const response = await fetch("http://localhost:3000/blog/addComment",{
+                method: "POST",
+                body: JSON.stringify({user:userId, comment:comment,blogId:blog._id}),
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+            console.log(response)
+            const result = await response.json()
+            if(response.status == 200){
+                notify(result.message)
+            }
+            else{
+                notify(result.message)
+            }
+            
+        }
+        catch(error){
+            notify(error.message)
+            console.log(error)
+        }
+    }
+
     useEffect(()=>{
         showLoading()
         const fetchBlog = async () =>{
@@ -157,6 +190,7 @@ const ArticleDetails = () => {
                 )
                 const data = await response.json()
                 console.log(data)
+                console.log("First comment: ",data.blog.comments[0].comment)
                 if(response.status == 200){
                     console.log("Blog-Data: ",data.blog)
                     hideLoading()
@@ -224,7 +258,7 @@ const ArticleDetails = () => {
                         <BiDislike className='mx-2 text-blue-700 cursor-pointer text-xl' /> <strong>{formatCount(blog.dislikes?.length)}</strong>
                     </button>
                 }
-                <FaRegCommentAlt className='mx-4 text-blue-700 cursor-pointer text-xl' /> 
+                {/* <FaRegCommentAlt className='mx-4 text-blue-700 cursor-pointer text-xl' />  */}
                 <CiShare2 className='mx-4 text-blue-700 cursor-pointer text-xl' />
             </div>
             <div className="flex justify-around gap-5 my-4">
@@ -248,6 +282,21 @@ const ArticleDetails = () => {
                         <p className="text-red-500 cursor-not-allowed" >Cannot follow yourself</p>
               }
 
+            </div>
+            <div className="flex flex-col justify-center items-center m-4 ">
+                <h3 className="font-bold text-2xl my-2">Comments ({formatCount(blog.comments?.length)})</h3>
+                <div className="flex justify-center items-center gap-2 w-[100%]">
+                      <input type="text" name="comment" id="comment" onChange={handleCommentChange} className="border-2 md:w-[50%] sm:w-[75%] border-blue-500 focus:outline-blue-700 rounded-md p-2" />
+                      <button onClick={addComment} className="md:w-[15%] bg-blue-700 text-white sm:w-[25%] p-2 rounded-md cursor-pointer hover:bg-blue-200 hover:text-blue-700 hover:font-semibold">Add Comment</button>
+                </div>
+                {/* figure out how to display the comments */}
+                {blog.comments?.map((comment,index)=>{
+                <div key={index} className="bg-gradient-to-r from-blue-500 to-blue-50 p-[2px] rounded-md h-auto w-[50%]">
+                    <div className="bg-blue-50 rounded-[calc(0.375rem-2px)] h-full w-full text-center font-semibold text-gray-700 p-4">
+                        {comment[index]?.comment}
+                    </div>
+                </div>
+                })}
             </div>
           
         </>           

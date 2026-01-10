@@ -99,7 +99,7 @@ async function getBlogBySlug(slug) {
     return {message: "Blog found", blog}
 }
 
-// Implemet the remain fix to the code
+// Implemet the remaining fix to the code
 async function likeBlog(body){
     const {userId, blogId} = body
 
