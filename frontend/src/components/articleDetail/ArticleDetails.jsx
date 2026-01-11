@@ -285,17 +285,22 @@ const ArticleDetails = () => {
             </div>
             <div className="flex flex-col justify-center items-center m-4 ">
                 <h3 className="font-bold text-2xl my-2">Comments ({formatCount(blog.comments?.length)})</h3>
-                <div className="flex justify-center items-center gap-2 w-[100%]">
+                <div className="flex justify-center items-center gap-2 w-[100%] my-4">
                       <input type="text" name="comment" id="comment" onChange={handleCommentChange} className="border-2 md:w-[50%] sm:w-[75%] border-blue-500 focus:outline-blue-700 rounded-md p-2" />
                       <button onClick={addComment} className="md:w-[15%] bg-blue-700 text-white sm:w-[25%] p-2 rounded-md cursor-pointer hover:bg-blue-200 hover:text-blue-700 hover:font-semibold">Add Comment</button>
                 </div>
                 {/* figure out how to display the comments */}
-                {blog.comments?.map((comment,index)=>{
-                <div key={index} className="bg-gradient-to-r from-blue-500 to-blue-50 p-[2px] rounded-md h-auto w-[50%]">
-                    <div className="bg-blue-50 rounded-[calc(0.375rem-2px)] h-full w-full text-center font-semibold text-gray-700 p-4">
-                        {comment[index]?.comment}
+                {/* {blog.comments?.length === 0 && <p className="text-gray-500">No comments yet</p>} */}
+                {blog.comments?.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).map((comment,index)=>{
+                return (    
+                <div key={index} className="bg-gradient-to-r from-blue-500 to-blue-50 p-[2px] rounded-md h-auto w-[50%] hover:scale-105 transition-transform duration-200 my-2">
+                    <div className="bg-blue-50 rounded-[calc(0.375rem-2px)] h-full w-full text-center font-semibold text-gray-700 p-4 ">
+                        {comment?.comment}
                     </div>
-                </div>
+                    <div className="text-xs text-gray-500 mt-1 text-right font-bold">
+                        {comment?.user?.username} - {new Date(comment?.timestamp).toLocaleDateString()}
+                    </div>
+                </div>)
                 })}
             </div>
           
