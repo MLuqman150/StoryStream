@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useLoading } from '../../context/LoadingContext';
 import { formatCount } from '../../utils/formatNumber';
+import ShareModal from './ShareModal';
 
 const ArticleDetails = () => {
 
@@ -17,7 +18,11 @@ const ArticleDetails = () => {
 
     const [comment, setComment] = useState("")
 
+    const [isOpen, setIsOpen] = useState(false)
+
     const {slug} = useParams()
+
+    const url = `http://localhost:3000/blogs/getBlogBySlug/${slug}`
 
     const {userId, token} = useAuth()
     
@@ -259,7 +264,8 @@ const ArticleDetails = () => {
                     </button>
                 }
                 {/* <FaRegCommentAlt className='mx-4 text-blue-700 cursor-pointer text-xl' />  */}
-                <CiShare2 className='mx-4 text-blue-700 cursor-pointer text-xl' />
+                <CiShare2 className='mx-4 text-blue-700 cursor-pointer text-xl' onClick={() => setIsOpen(true)} />
+                <ShareModal isOpen={isOpen} setIsOpen={setIsOpen} blogUrl={url} />    
             </div>
             <div className="flex justify-around gap-5 my-4">
               <div className="flex gap-2">
