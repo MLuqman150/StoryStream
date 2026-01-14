@@ -11,6 +11,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useLoading } from '../../context/LoadingContext';
 import { formatCount } from '../../utils/formatNumber';
 import ShareModal from './ShareModal';
+// import parse from 'html-react-parser';
 
 const ArticleDetails = () => {
 
@@ -195,7 +196,7 @@ const ArticleDetails = () => {
                 )
                 const data = await response.json()
                 console.log(data)
-                console.log("First comment: ",data.blog.comments[0].comment)
+                console.log("First comment: ",data.blog.comments[0]?.comment)
                 if(response.status == 200){
                     console.log("Blog-Data: ",data.blog)
                     hideLoading()
@@ -230,7 +231,7 @@ const ArticleDetails = () => {
                     <img src={blog.image ? `http://localhost:3000/`+blog.image.replace("/uploads/", ""): ""} alt="" className=" md:w-[70%] h-auto rounded-md border-2 border-blue-500 hover:scale-105 cursor-pointer sm:w-[100%]" />
                 </div>
                 <div className="p-2 text-center mx-8 ">
-                    <p className="text-gray-500 m-2">{blog.content}</p>
+                    <p className="text-gray-500 m-2" dangerouslySetInnerHTML={{ __html: blog?.content }}></p>
                 </div>
             </div>
             <ToastContainer
@@ -297,7 +298,7 @@ const ArticleDetails = () => {
                 </div>
                 {/* figure out how to display the comments */}
                 {/* {blog.comments?.length === 0 && <p className="text-gray-500">No comments yet</p>} */}
-                {blog.comments?.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).map((comment,index)=>{
+                {blog?.comments?.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).map((comment,index)=>{
                 return (    
                 <div key={index} className="bg-gradient-to-r from-blue-500 to-blue-50 p-[2px] rounded-md h-auto w-[50%] hover:scale-105 transition-transform duration-200 my-2">
                     <div className="bg-blue-50 rounded-[calc(0.375rem-2px)] h-full w-full text-center font-semibold text-gray-700 p-4 ">

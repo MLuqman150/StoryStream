@@ -100,7 +100,7 @@ function Home() {
                             <Link to={`/articleDetails/${blog.slug}`}>
                                 <h1 className='text-2xl font-bold font-mono text-blue-700 text-center hover:underline'>{blog.title}</h1>
                             </Link>
-                            <p className='text-center'>{blog.content.split(" ").slice(0, 20).join(" ")}</p>
+                            <p className='text-center' dangerouslySetInnerHTML={{__html: blog.content.split(" ").slice(0, 10).join(" ")}}></p>
                             <div className='flex m-2'> 
                             {/* <BiLike className='mx-1 text-blue-700 cursor-pointer' />
                             <BiDislike className='mx-1 text-blue-700 cursor-pointer' />
