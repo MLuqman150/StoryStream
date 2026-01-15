@@ -22,8 +22,9 @@ router.post("/createBlog", protect, upload.single("image"), async (req, res) => 
 
 router.get("/getAllBlogs", protect, async (req, res) => {
     try {
-        const response = await blogService.getAllBlogs();
-        res.status(200).json({message: response.message, blogs: response.blogs})
+        const query = req.query
+        const response = await blogService.getAllBlogs(query);
+        res.status(200).json({message: response.message, blogs: response.blogs, count: response.count})
     }
     catch (err) {
         res.status(500).send("Unable to fetch blogs! Please try again.");

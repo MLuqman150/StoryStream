@@ -37,14 +37,17 @@ async function createBlog(body, file) {
     return { message: "Blog created successFully", blog: newBlog }
 }
 
-async function getAllBlogs() {
-    const blogs = await Blog.find().sort({_id: -1})
+async function getAllBlogs(query) {
+    let { page, pageSize } = query
+    
+    const blogs = await Blog.find().skip((page - 1) * pageSize).limit(pageSize).sort({_id: -1})
 
+    const count = await Blog.countDocuments();
     // Pagination to be implemented
     if (!blogs) {
         throw new Error("Currently there is no blog in the database")
     }
-    return { message: "All the Blogs", blogs }
+    return { message: "All the Blogs", blogs, count }
 }
 
 async function getBlogsByAuthor(authorParam, query) {
