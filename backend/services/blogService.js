@@ -2,6 +2,13 @@ const Blog = require('../models/blog.model')
 const Users = require('../models/user.model')
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
+const jwt_decode = require('jwt-decode');
+
+// function jwtDecode(token){
+//     // var token = 'eyJ0eXAiO.../// jwt token';
+//     var decoded = jwt_decode(token);
+//     console.log(decoded);
+// }
 
 async function createBlog(body, file) {
     const { title, content, author, tags } = body
@@ -82,14 +89,28 @@ async function getBlogsByAuthor(authorParam, query) {
     return { message: "All the Blogs by this author", blogs }
 }
 
-async function getBlogsByFollowing(body) {
-    const userId = body.userId
-    const followings = await Users.findOne({ _id: userId })
+async function getBlogsByFollowing(body, query) {
+    const userId = body
+    let { page, pageSize } = query
+    const following = await Users.findOne({ _id: userId })
 
     if (!following) {
         throw new Error("No user with this id found")
     }
-    const followingAuthors = followings["following"]
+    const followingAuthors = following["following"]
+    // console.log("Following Authors: ", followingAuthors)
+
+    if(followingAuthors.length == 0){
+        return {message: "Currently you are following anyone."}
+    }
+    const blogs = await Blog.find({ author: { $in: followingAuthors } }).skip((page - 1) * pageSize).limit(pageSize).sort({_id: -1})
+
+    const count = await Blog.countDocuments();
+
+    // if(!blogs){
+    //     throw new Error("Currently you are following no one.")
+    // }
+    return { message: "All the Blogs by this author", blogs, count }
 }
 async function deleteBlog(id) { }
 

@@ -32,6 +32,20 @@ router.get("/getAllBlogs", protect, async (req, res) => {
     }
 })
 
+router.get("/getBlogsByFollowing",protect, async (req,res) =>{
+    try{
+        const body = req.user
+        // console.log("Body: ", body)
+        const query = req.query
+        const response = await blogService.getBlogsByFollowing(body,query)
+        res.status(200).json({message: response.message, blogs: response.blogs, count: response.count})
+    }
+    catch(err){
+        res.status(500).send("Unable to fetch blogs! Please try again.");
+        console.log("Error: ", err);
+    }
+})
+
 router.get("/getBySlug/:slug",async (req,res)=>{
     const slug = req.params.slug
     // console.log("Slug: ", slug)

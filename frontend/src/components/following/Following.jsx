@@ -1,17 +1,32 @@
 import React,{useEffect,useState} from 'react'
-import Navbar from "../Navbar/Navbar"
+import Navbar from '../Navbar/Navbar'
+// import bundeno  from '../../assets/bundeno.png'
+// import { BiLike, BiDislike } from "react-icons/bi";
+// import { FaRegCommentAlt } from "react-icons/fa";
+// import { CiShare2 } from "react-icons/ci";
 import { Link } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from 'react-toastify';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import {FaArrowUp} from "react-icons/fa"
+import { useLoading } from '../../context/LoadingContext';
+import InfiniteScroll from "react-infinite-scroll-component";
 
-const Following = () =>{
-const [showButton, useShowButton] = useState(false)
+function Home() {
+
+    const [page, setPage] = useState(1);
+
+    const pageSize = 5;
+
+    const [hasMore, setHasMore] = useState(true)
+
+    const [showButton, setShowButton] = useState(false)
+
+    const {showLoading, hideLoading} = useLoading()
 
     const onScroll = () =>{
-        window.scrollY > 500 ? useShowButton(true) : useShowButton(false)
+        window.scrollY > 500 ? setShowButton(true) : setShowButton(false)
     }
 
     useEffect(() => {
@@ -25,7 +40,7 @@ const [showButton, useShowButton] = useState(false)
         window.scrollTo({top: 0, behavior: "smooth"})
     }
 
-    const {token, logout} = useAuth()
+    const {token, logout, userId} = useAuth()
 
     const navigate = useNavigate();
     
@@ -34,29 +49,35 @@ const [showButton, useShowButton] = useState(false)
         }
     const [blogs, setBlogs] = useState([])
     
-    useEffect(()=>{
-        const fetchBlogs = async () =>{
+
+    const fetchBlogs = async () =>{
             try{
-                const response = await fetch("http://localhost:3000/blog/getAllBlogs",
+                const response = await fetch(`http://localhost:3000/blog/getBlogsByFollowing?page=${page}&pageSize=${pageSize}`,
                     {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
                             "Authorization": `Bearer ${token}`
-                        }
+                        },
+                        // body: JSON.stringify({userId: userId})
                     }
                 )
                 const data = await response.json()
                 console.log(data)
                 if(response.status == 200){
+                    hideLoading()
                     notify(data.message)
-                    setBlogs(data.blogs)
+                    setBlogs([...blogs, ...data.blogs])
+                    console.log("Count: ", data.count)
+                    setHasMore(data?.count > 0)
+                    setPage(page + 1)
                 }
                 else if(response.status == 401){
                     logout()
                     navigate("/")
                 }
                 else{
+                    hideLoading()
                     notify(data.message)
                 }
             }
@@ -65,21 +86,25 @@ const [showButton, useShowButton] = useState(false)
                 //     logout()
                 //     navigate("/")
                 // }
+                hideLoading()
                 notify(err.message)
                 console.log(err)
             }    
         }
-        fetchBlogs()
-        
-    },
-    [token]   
-    )
 
+    const fetchMoreData = () => {
+        fetchBlogs()
+      }    
+
+        useEffect(()=>{
+            showLoading()
+            fetchBlogs()
+        },[token])
 
     return (
         <div>
             <Navbar />
-            {
+            {/* {
                 blogs ? blogs.map((blog,index)=> (
                     <div key={index} className='flex justify-center sm:w-full md:w-[60%] items-center flex-col  bg-[#D9EAFD] rounded-xl h-auto p-2 mb-4 mx-auto'>
             
@@ -88,16 +113,49 @@ const [showButton, useShowButton] = useState(false)
                             <Link to={`/articleDetails/${blog.slug}`}>
                                 <h1 className='text-2xl font-bold font-mono text-blue-700 text-center hover:underline'>{blog.title}</h1>
                             </Link>
-                            <p className='text-center'>{blog.content.split(" ").slice(0, 20).join(" ")}</p>
+                            <p className='text-center' dangerouslySetInnerHTML={{__html: blog.content.split(" ").slice(0, 10).join(" ")}}></p>
                             <div className='flex m-2'> 
+                            {/* <BiLike className='mx-1 text-blue-700 cursor-pointer' />
+                            <BiDislike className='mx-1 text-blue-700 cursor-pointer' />
+                            <FaRegCommentAlt className='mx-1 text-blue-700 cursor-pointer' /> */}
+                            {/* <CiShare2 className='mx-1 text-blue-700 cursor-pointer  ' /> */}
+                            {/* </div>
+                        </div>
+            
+                    </div> */}
+                    {/* ) */}
+                {/* ) : <div className="text-center m-4 text-lg font-extrabold cursor-pointer"> No Blog Found. </div>  */}
+            {/* } */} 
+            <InfiniteScroll
+            dataLength={blogs.length}
+            next={fetchMoreData}
+            hasMore={hasMore}
+            loader={showLoading()}
+            >
+            {hideLoading()}    
+            {
+                blogs?.length > 0 ?  blogs.map((blog,index)=> (
+                    <div key={index} className='flex justify-center sm:w-full md:w-[60%] items-center flex-col  bg-[#D9EAFD] rounded-xl h-auto p-2 mb-4 mx-auto'>
+            
+                        <img src={blog.image ? `http://localhost:3000/`+blog.image.replace("/uploads/", ""): ""} alt={blog.title} className='w-full m-2 h-auto rounded-xl sm:h-auto' />
+                        <div>
+                            <Link to={`/articleDetails/${blog.slug}`}>
+                                <h1 className='text-2xl font-bold font-mono text-blue-700 text-center hover:underline'>{blog.title}</h1>
+                            </Link>
+                            <p className='text-center' dangerouslySetInnerHTML={{__html: blog.content.split(" ").slice(0, 10).join(" ")}}></p>
+                            <div className='flex m-2'> 
+                            {/* <BiLike className='mx-1 text-blue-700 cursor-pointer' />
+                            <BiDislike className='mx-1 text-blue-700 cursor-pointer' />
+                            <FaRegCommentAlt className='mx-1 text-blue-700 cursor-pointer' /> */}
+                            {/* <CiShare2 className='mx-1 text-blue-700 cursor-pointer  ' /> */}
                             </div>
                         </div>
             
                     </div>
                     )
-                ) : <div className="text-center m-4 text-lg font-extrabold cursor-pointer"> No Blog Found. </div> 
-            }
-
+                ) : <div className="text-center m-4 text-lg font-extrabold cursor-pointer"> Currently you are following any author. </div> 
+            }    
+            </InfiniteScroll>    
             <ToastContainer
                 position="top-right"
                 autoClose={3000}
@@ -110,7 +168,7 @@ const [showButton, useShowButton] = useState(false)
                 pauseOnHover
                 theme="light"
             />
-            <Link to="/createBlog">
+        	<Link to="/createBlog">
                 <div className='right-2 bottom-2 text-4xl font-bold text-white bg-blue-500 hover:bg-blue-600 cursor-pointer p-2 rounded-full w-16 h-16 text-center fixed'>+</div>
             </Link>
             <FaArrowUp onClick={scrollToTop} className={showButton ? "fixed bottom-20 right-2 text-white bg-blue-500 hover:bg-blue-600 cursor-pointer p-2 rounded-full w-10 h-10 text-center" : "hidden"}/>
@@ -119,4 +177,4 @@ const [showButton, useShowButton] = useState(false)
     )
 }
 
-export default Following
+export default Home

@@ -180,7 +180,7 @@ function Home() {
             >
             {hideLoading()}    
             {
-                blogs ?  blogs.map((blog,index)=> (
+                blogs?.length > 0 ?  blogs.map((blog,index)=> (
                     <div key={index} className='flex justify-center sm:w-full md:w-[60%] items-center flex-col  bg-[#D9EAFD] rounded-xl h-auto p-2 mb-4 mx-auto'>
             
                         <img src={blog.image ? `http://localhost:3000/`+blog.image.replace("/uploads/", ""): ""} alt={blog.title} className='w-full m-2 h-auto rounded-xl sm:h-auto' />
@@ -199,7 +199,7 @@ function Home() {
             
                     </div>
                     )
-                ) : <div className="text-center m-4 text-lg font-extrabold cursor-pointer"> No Blog Found. </div> 
+                ) : <div className="text-center m-4 text-lg font-extrabold cursor-pointer"> Currently no blog found. </div> 
             }    
             </InfiniteScroll>    
             <ToastContainer
