@@ -145,11 +145,44 @@ async function unFollowUser(body){
 
 }
 
+async function upadateUser(body, userId){
+    const { username, password} = body
+
+    const user = await Users.findOne({ _id: userId })
+
+    if(!user){
+        return {message:"No user found with this id"}
+    }
+
+    if(username.trim() !== ""){
+        user.username = username
+    }
+
+    if(password.trim() !== ""){
+        const hashedPassword = await bcrypt.hash(password, 10)
+        user.password = hashedPassword
+    }
+
+    await user.save()
+
+    return {message:"User info updated successfully", user}
+}
+
+async function deleteUser(userId){
+    const deletedUser = await Users.findByIdAndDelete(userId)
+    if(!deletedUser){
+        return {message:"No user found with this id"}
+    }
+    return {message:"User deleted successfully", deletedUser}
+}
+
 module.exports = {
     login,
     createUser,
     getAllUsers,
     getAuthorByName,
     followUser,
-    unFollowUser
+    unFollowUser,
+    upadateUser,
+    deleteUser
 }
