@@ -1,4 +1,3 @@
-
 import Navbar from "../Navbar/Navbar"
 import { useParams } from 'react-router-dom';
 import {useEffect, useState} from "react"
@@ -13,7 +12,7 @@ const AuthorDetails = () => {
     
         const [author, setAuthor] = useState({})
 
-        const {loading, showLoading, hideLoading} = useLoading()
+        const {showLoading, hideLoading} = useLoading()
     
         const {username} = useParams()
 

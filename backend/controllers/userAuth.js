@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const userService = require("../services/userService")
 const protect = require("../middlewares/authMiddleware")
-const isAdmin = require("../middlewares/adminCheck")
+const isAdmin = require("../middlewares/adminCheck");
 
 // Api for user login
 router.post("/login", async (req, res) => {
@@ -76,6 +76,29 @@ router.put("/unFollowUser", protect, async (req,res)=>{
     catch (e){
         res.status(500).send(e.message)
     } 
+})
+
+router.patch("/updateUserInfo", protect, async (req,res)=> {
+    try{
+        const body = req.body
+        const userId = req.user 
+        const response = await userService.upadateUser(body,userId)
+        res.status(200).send({message: response.message, user: response.user})
+    }
+    catch(err){
+        res.status(500).send(err.message)
+    }
+})
+
+router.delete("/deleteUser", async (req,res)=> {
+    try{
+        const userId = req.user
+        const response = await userService.deleteUser(userId)
+        res.status(200).send({message: response.message})
+    }
+    catch(err){
+        res.status(500).send(err.message)
+    }
 })
 
 module.exports = router
