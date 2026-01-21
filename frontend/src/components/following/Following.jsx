@@ -67,7 +67,7 @@ function Home() {
                 if(response.status == 200){
                     hideLoading()
                     notify(data.message)
-                    setBlogs([...blogs, ...data.blogs])
+                    setBlogs([...blogs, ...(data?.blogs || [])])
                     console.log("Count: ", data.count)
                     setHasMore(data?.count > 0)
                     setPage(page + 1)
@@ -153,7 +153,7 @@ function Home() {
             
                     </div>
                     )
-                ) : <div className="text-center m-4 text-lg font-extrabold cursor-pointer"> Currently you are following any author. </div> 
+                ) : <div className="text-center m-4 text-lg font-extrabold cursor-pointer"> Currently you are not following any author. </div> 
             }    
             </InfiniteScroll>    
             <ToastContainer

@@ -101,7 +101,7 @@ async function getBlogsByFollowing(body, query) {
     // console.log("Following Authors: ", followingAuthors)
 
     if(followingAuthors.length == 0){
-        return {message: "Currently you are following anyone."}
+        return {message: "Currently you are not following anyone."}
     }
     const blogs = await Blog.find({ author: { $in: followingAuthors } }).skip((page - 1) * pageSize).limit(pageSize).sort({_id: -1})
 

@@ -90,7 +90,7 @@ router.patch("/updateUserInfo", protect, async (req,res)=> {
     }
 })
 
-router.delete("/deleteUser", async (req,res)=> {
+router.delete("/deleteUser", protect, async (req,res)=> {
     try{
         const userId = req.user
         const response = await userService.deleteUser(userId)
