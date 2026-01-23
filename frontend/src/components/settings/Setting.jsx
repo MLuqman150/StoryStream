@@ -11,9 +11,11 @@ const Setting = ()=>{
     return (
         <>
             <Navbar/>
-            <div className="max-w-4xl mx-auto p-4 ">
-                <h2 className="text-lg font-extrabold">Settings</h2>
-                <h2 className="text-md font-bold">Update User Info:</h2>
+            <div className="flex justify-center mt-4 w-[75%]">
+                <h2 className="text-xl font-extrabold">Settings</h2>
+            </div>
+            <div className="flex flex-col justify-center items-center p-4 ">
+                <h2 className="text-lg font-bold">Update User Info:</h2>
                 <h2 className="text-md font-bold mt-2">Username: </h2>
                 <div className="flex items-center gap-2 mt-2">
                     <label htmlFor="username" className="cursor-pointer">Change Username: </label>
@@ -36,7 +38,7 @@ const Setting = ()=>{
                     <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold mt-2 px-2 py-2 rounded">Update</button>
                 </div>
 
-                <h2 className="text-md font-bold mt-8 text-red-500">Delete Account:</h2>
+                <h2 className="text-lg font-bold mt-8 text-red-500">Delete Account:</h2>
                 <div className="flex items-center mx-20 gap-2 mt-2">
                     <button onClick={() => setOpenModal(true)} className="bg-red-500 hover:bg-red-600 text-white font-bold mt-2 px-2 py-2 rounded">Delete</button>
                 </div>
